@@ -146,8 +146,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 #navGroup:hover::after,#navGroup:focus-visible::after{transform:scaleX(1);transform-origin:left}
 
 #burger{display:none;font-family:var(--m);font-weight:400;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--fg);padding:12px 0 12px 12px}
-/* ten items need more bar than nine did, so the burger takes over sooner */
-@media (max-width:1340px){#navLinks{display:none}#burger{display:block}}
+/* Eleven items would sit hard against both edges at 1340. The bar is
+   shown only where it has room to breathe; below that the menu — which
+   has space for the full list and reads better — takes over. Squeezing
+   the row would have cost the thing the row is for. */
+@media (max-width:1420px){#navLinks{display:none}#burger{display:block}}
 
 #menu{position:fixed;inset:0;z-index:82;background:rgba(244,242,237,.98);-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px);
       display:flex;flex-direction:column;gap:2px;overflow-y:auto;
@@ -284,7 +287,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 #expertise .credit{color:rgba(244,242,238,.5)}
 
 /* ═══ 03 SCALE ═════════════════════════════════════════════ */
-#scale{position:relative;z-index:10;padding:clamp(38px,7vh,96px) var(--gut) clamp(70px,14vh,200px)}
+#scale{position:relative;z-index:10;padding:clamp(70px,13vh,180px) var(--gut) clamp(70px,13vh,180px)}
 .sp{height:clamp(24px,5vh,64px)}
 .sp-s{height:clamp(20px,4.4vh,52px)}
 /* each figure gets its own stretch of screen — they are the section,
@@ -301,7 +304,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 @media (max-width:760px){.stat.a,.stat.b{grid-template-columns:1fr;justify-items:start;text-align:left}.stat.b .sm{justify-self:start}}
 
 /* ═══ 04 GLOBAL ════════════════════════════════════════════ */
-#global{position:relative;z-index:10;padding-top:clamp(50px,9vh,120px);padding-bottom:clamp(70px,13vh,170px);overflow:hidden}
+#global{position:relative;z-index:10;padding-top:clamp(70px,13vh,180px);padding-bottom:clamp(70px,13vh,180px);overflow:hidden}
 #global>*{position:relative;z-index:1}
 .g-head{padding:0 var(--gut)}
 /* The heading takes the top of the section and the whole network sits at
@@ -382,7 +385,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 /* ═══ 05 SOLUTIONS ═════════════════════════════════════════ */
 /* A quiet numbered index on the left, one large photograph on the right.
    The list navigates; the picture is the payoff. No pattern fields. */
-#solutions{position:relative;z-index:10;padding:clamp(70px,13vh,180px) var(--gut) clamp(96px,18vh,240px)}
+#solutions{position:relative;z-index:10;padding:clamp(70px,13vh,180px) var(--gut)}
 /* sized so "TECHNOLOGY BUILT AROUND" clears the column on one line — the
    old max-width:15ch was narrower than the text and forced it to break */
 .sol-title{font-family:var(--d);font-weight:400;text-transform:uppercase;margin:18px 0 0;
@@ -458,7 +461,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 }
 
 /* ═══ 07 CAPABILITIES ══════════════════════════════════════ */
-#capabilities{position:relative;z-index:10;padding:clamp(70px,14vh,190px) var(--gut)}
+#capabilities{position:relative;z-index:10;padding:clamp(70px,13vh,180px) var(--gut)}
 /* the heading lives in this column and must fit it — at 4.6vw it used to
    overrun and print straight over the capability grid */
 .cap-grid{display:grid;grid-template-columns:minmax(260px,33%) minmax(0,1fr);gap:clamp(20px,3.4vw,64px);align-items:start}
@@ -619,8 +622,51 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
   .yr:nth-child(3n+1) .yl{font-size:8px}
 }
 
+/* ═══ 11 PRESS ═════════════════════════════════════════════
+   Recognition establishes the record; this is the record being
+   discussed elsewhere. Same editorial grammar as Insights so the two
+   read as a pair, but the metadata runs the other way — publication
+   first, date last — so a glance tells you which one you are in. */
+#press{position:relative;z-index:10;padding:clamp(70px,13vh,180px) var(--gut)}
+.pr-head{max-width:78ch}
+.pr-list{margin-top:clamp(34px,6vh,76px);border-top:1px solid var(--hair)}
+.pr{display:grid;grid-template-columns:minmax(150px,17%) minmax(0,1fr) minmax(104px,auto);
+  gap:clamp(14px,3vw,52px);align-items:baseline;
+  padding:clamp(20px,3.4vh,42px) 0;border-bottom:1px solid var(--hair)}
+.pr-pub{font-family:var(--m);font-weight:400;font-size:9.5px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--fg-3);transition:color .45s var(--ease)}
+.pr-mid{display:block;min-width:0}
+.pr-t{display:block;font-family:var(--d);font-weight:300;text-transform:uppercase;
+  font-size:clamp(17px,2.05vw,32px);line-height:1.08;letter-spacing:-.008em;color:var(--fg);
+  transition:transform .6s var(--ease);transform-origin:left}
+.pr-d{display:block;margin-top:11px;font-family:var(--b);font-weight:400;
+  font-size:clamp(12.5px,.92vw,14px);line-height:1.62;color:var(--fg-2);max-width:54ch;
+  opacity:.82;transition:opacity .45s var(--ease)}
+.pr-meta{display:flex;align-items:baseline;justify-content:flex-end;gap:clamp(12px,1.5vw,22px);
+  font-family:var(--m);font-weight:300;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--fg-3);white-space:nowrap}
+.pr-ar{display:inline-block;color:var(--fg-4);transition:transform .6s var(--ease),color .45s var(--ease)}
+.pr:hover .pr-t,.pr:focus-visible .pr-t{transform:translateX(9px)}
+.pr:hover .pr-pub,.pr:focus-visible .pr-pub{color:var(--blue)}
+.pr:hover .pr-d,.pr:focus-visible .pr-d{opacity:1}
+.pr:hover .pr-ar,.pr:focus-visible .pr-ar{transform:translateX(7px);color:var(--blue)}
+.pr-foot{margin-top:clamp(20px,3vh,34px);font-family:var(--m);font-weight:300;font-size:9.5px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--fg-4)}
+@media (max-width:860px){
+  /* publication over headline over date — one column, nothing cramped */
+  .pr{grid-template-columns:1fr;gap:0;padding:clamp(20px,3vh,28px) 0}
+  .pr-pub{font-size:10px;margin-bottom:11px;display:block}
+  .pr-t{font-size:clamp(19px,5.2vw,26px);line-height:1.12}
+  .pr-d{font-size:13px;margin-top:10px;max-width:none}
+  .pr-meta{justify-content:flex-start;margin-top:14px;gap:14px}
+  .pr:hover .pr-t{transform:none}
+}
+
 /* ═══ 12 INSIGHTS ══════════════════════════════════════════ */
-#insights{position:relative;z-index:10;padding:clamp(70px,13vh,180px) var(--gut)}
+/* Press is what others say; Insights is what ITCAN says. The change of
+   voice is marked by a rule and a wider opening, not by an effect. */
+#insights{position:relative;z-index:10;padding:clamp(70px,13vh,180px) var(--gut);
+  border-top:1px solid var(--hair)}
 .ins{display:grid;grid-template-columns:52px minmax(0,1fr) minmax(0,.66fr);gap:clamp(12px,3vw,48px);align-items:baseline;padding:clamp(18px,3.6vh,44px) 0;border-top:1px solid var(--hair)}
 #insights .ins:last-of-type{border-bottom:1px solid var(--hair)}
 .ins h3{font-family:var(--d);font-weight:300;text-transform:uppercase;font-size:clamp(17px,2.9vw,44px);line-height:1;letter-spacing:-.008em;margin:0;color:var(--fg);transition:transform .8s var(--ease);transform-origin:left}
@@ -808,7 +854,7 @@ body.cur #cd,body.cur #cr{opacity:1}
   <div id="navLinks">
     <a href="#solutions">Solutions</a><a href="#industries">Industries</a><a href="#global">Global</a>
     <a href="#expertise">Expertise</a><a href="#about">About</a><a href="#awards">Awards</a>
-    <a href="#careers">Careers</a><a href="#insights">Insights</a><a href="#contact">Contact</a>
+    <a href="#careers">Careers</a><a href="#press">Press</a><a href="#insights">Insights</a><a href="#contact">Contact</a>
     <button id="navGroup" aria-haspopup="dialog" aria-expanded="false">ITCAN Group <i class="beta">Beta</i></button>
   </div>
   <button id="burger" aria-expanded="false">Menu</button>
@@ -818,7 +864,7 @@ body.cur #cd,body.cur #cr{opacity:1}
   <button id="menuClose">Close</button>
   <a href="#solutions">Solutions</a><a href="#industries">Industries</a><a href="#global">Global</a>
   <a href="#expertise">Expertise</a><a href="#about">About</a><a href="#awards">Awards</a>
-  <a href="#careers">Careers</a><a href="#insights">Insights</a><a href="#contact">Contact</a>
+  <a href="#careers">Careers</a><a href="#press">Press</a><a href="#insights">Insights</a><a href="#contact">Contact</a>
   <button id="groupOpen" aria-haspopup="dialog" aria-expanded="false">
     <span class="gk">Six countries &middot; Beta</span>
     <span class="gn">ITCAN Group</span>
@@ -990,6 +1036,59 @@ body.cur #cd,body.cur #cr{opacity:1}
   <div class="aw-strip" id="awStrip" role="list" aria-label="ITCAN award photography"></div>
 </section>
 
+
+<!-- ══ 11 PRESS ══ -->
+<section id="press" aria-label="Press">
+  <div class="pr-head">
+    <p class="lbl" data-r>Press</p>
+    <h2 class="h-md" data-r style="--dl:60ms;margin-top:16px;max-width:15ch">In the<br>conversation.</h2>
+  </div>
+  <div class="pr-list">
+    <a class="pr" data-r href="https://www.businesstimes.com.sg/events-awards/enterprise-50/enterprise-50-2024/forging-lasting-legacies-multi-year-e50-winners-share-their-formula-long-term-success" target="_blank" rel="noopener noreferrer">
+      <span class="pr-pub">The Business Times</span>
+      <span class="pr-mid"><span class="pr-t">Forging lasting legacies: multi-year E50 winners share their formula for long-term success</span>
+      <span class="pr-d">A roundtable on ten years of Enterprise 50 recognition, software, sustainability and workforce development.</span></span>
+      <span class="pr-meta"><time datetime="2024-11-26">26 Nov 2024</time><span class="pr-ar" aria-hidden="true">&rarr;</span></span>
+    </a>
+    <a class="pr" data-r href="https://theenterpriseworld.com/sippy-sujan-balancing-work-and-life/" target="_blank" rel="noopener noreferrer">
+      <span class="pr-pub">The Enterprise World</span>
+      <span class="pr-mid"><span class="pr-t">Sippy Sujan: thriving in diversity and balancing success of work and life</span>
+      <span class="pr-d">Magazine feature on the Managing Director of ITCAN Pte Ltd.</span></span>
+      <span class="pr-meta"><time datetime="2023-08">Aug 2023</time><span class="pr-ar" aria-hidden="true">&rarr;</span></span>
+    </a>
+    <a class="pr" data-r href="https://www.businesstimes.com.sg/singapore/smes/need-it-solutions-can-says-itcan" target="_blank" rel="noopener noreferrer">
+      <span class="pr-pub">The Business Times</span>
+      <span class="pr-mid"><span class="pr-t">Need IT solutions? &lsquo;Can,&rsquo; says ITCAN</span>
+      <span class="pr-d">A profile of the company&rsquo;s growth, diversification and workforce.</span></span>
+      <span class="pr-meta"><time datetime="2023-01-26">26 Jan 2023</time><span class="pr-ar" aria-hidden="true">&rarr;</span></span>
+    </a>
+    <a class="pr" data-r href="https://www.businesstimes.com.sg/singapore/smes/itcans-ceo-walks-talk" target="_blank" rel="noopener noreferrer">
+      <span class="pr-pub">The Business Times</span>
+      <span class="pr-mid"><span class="pr-t">ITCAN&rsquo;s CEO walks the talk</span>
+      <span class="pr-d">A profile of Amit Sujan as founder and chief executive.</span></span>
+      <span class="pr-meta"><time datetime="2018-09-03">3 Sep 2018</time><span class="pr-ar" aria-hidden="true">&rarr;</span></span>
+    </a>
+    <a class="pr" data-r href="https://www.businesstimes.com.sg/singapore/smes/itcan-making-name-competitive-it-field" target="_blank" rel="noopener noreferrer">
+      <span class="pr-pub">The Business Times</span>
+      <span class="pr-mid"><span class="pr-t">ITCAN is making a name in competitive IT field</span>
+      <span class="pr-d">An early profile of the IT services business.</span></span>
+      <span class="pr-meta"><time datetime="2017-07-31">31 Jul 2017</time><span class="pr-ar" aria-hidden="true">&rarr;</span></span>
+    </a>
+    <a class="pr" data-r href="https://resources.sansan.com/blog/business-leader-series-itcans-amit-sujan" target="_blank" rel="noopener noreferrer">
+      <span class="pr-pub">Sansan</span>
+      <span class="pr-mid"><span class="pr-t">The Business Leader Series: ITCAN&rsquo;s Amit Sujan</span>
+      <span class="pr-d">A leadership profile in the Business Leader Series.</span></span>
+      <span class="pr-meta"><time datetime="2016-05-17">17 May 2016</time><span class="pr-ar" aria-hidden="true">&rarr;</span></span>
+    </a>
+    <a class="pr" data-r href="https://www.techinasia.com/spirit-of-enterprise-awards-43-honorees" target="_blank" rel="noopener noreferrer">
+      <span class="pr-pub">Tech in Asia</span>
+      <span class="pr-mid"><span class="pr-t">Spirit of Enterprise Awards: 43 honorees</span>
+      <span class="pr-d">ITCAN and its founder named among the year&rsquo;s honourees.</span></span>
+      <span class="pr-meta"><time datetime="2008-10-12">12 Oct 2008</time><span class="pr-ar" aria-hidden="true">&rarr;</span></span>
+    </a>
+  </div>
+  <p class="pr-foot" data-r>Selected coverage. Publisher pages may require a subscription.</p>
+</section>
 
 <!-- ══ 12 INSIGHTS ══ -->
 <section id="insights" aria-label="Insights">
