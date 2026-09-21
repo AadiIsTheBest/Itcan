@@ -136,6 +136,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
   background:var(--blue);transform:scaleX(0);transform-origin:right;
   transition:transform .6s var(--ease)}
 #navGroup:hover,#navGroup:focus-visible{color:var(--blue)}
+/* this section is a placeholder until the employee login replaces it, and
+   it should never be mistaken for a finished destination */
+.beta{font-style:normal;font-family:var(--m);font-weight:400;font-size:7.5px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--blue);
+  border:1px solid rgba(27,73,200,.42);border-radius:2px;
+  padding:2px 4px;margin-left:7px;vertical-align:middle;line-height:1}
+.gh .beta{font-size:8px;margin-left:9px}
 #navGroup:hover::after,#navGroup:focus-visible::after{transform:scaleX(1);transform-origin:left}
 
 #burger{display:none;font-family:var(--m);font-weight:400;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--fg);padding:12px 0 12px 12px}
@@ -278,6 +285,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 
 /* ═══ 03 SCALE ═════════════════════════════════════════════ */
 #scale{position:relative;z-index:10;padding:clamp(38px,7vh,96px) var(--gut) clamp(70px,14vh,200px)}
+.sp{height:clamp(24px,5vh,64px)}
+.sp-s{height:clamp(20px,4.4vh,52px)}
 /* each figure gets its own stretch of screen — they are the section,
    not three rows of a table */
 .stat{display:grid;align-items:end;gap:clamp(8px,2vw,48px);
@@ -305,11 +314,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .loc-list{display:flex;flex-direction:column;border-top:1px solid var(--hair)}
 .loc{display:grid;grid-template-columns:22px minmax(0,1fr);gap:11px;align-items:baseline;
      text-align:left;width:100%;padding:clamp(11px,1.7vh,19px) 0;
-     border-bottom:1px solid var(--hair);transition:padding-left .6s var(--ease)}
-.loc:hover,.loc.on{padding-left:11px}
-.loc .n{font-family:var(--m);font-weight:300;font-size:9px;letter-spacing:.18em;color:var(--fg-4);transition:color .5s}
-.loc .c{font-family:var(--d);font-weight:300;text-transform:uppercase;font-size:clamp(16px,1.6vw,28px);line-height:1.04;color:var(--fg-3);transition:color .5s var(--ease);display:block}
-.loc .r{font-family:var(--m);font-weight:300;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-4);margin-top:6px;opacity:0;max-height:0;overflow:hidden;transition:opacity .5s var(--ease),max-height .5s var(--ease);display:block}
+     border-bottom:1px solid var(--hair);transition:transform .34s var(--ease)}
+.loc:hover,.loc.on{transform:translateX(11px)}
+.loc .n{font-family:var(--m);font-weight:300;font-size:9px;letter-spacing:.18em;color:var(--fg-4);transition:color .25s}
+.loc .c{font-family:var(--d);font-weight:300;text-transform:uppercase;font-size:clamp(16px,1.6vw,28px);line-height:1.04;color:var(--fg-3);transition:color .25s var(--ease);display:block}
+/* height snaps, only the ink fades — a max-height tween here reflowed the
+   list, and the map underneath it, sixty times a second */
+.loc .r{font-family:var(--m);font-weight:300;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-4);margin-top:6px;opacity:0;max-height:0;overflow:hidden;transition:opacity .26s var(--ease);display:block}
 .loc:hover .c,.loc.on .c{color:var(--fg)}
 .loc:hover .n,.loc.on .n{color:var(--blue)}
 .loc.on .r{opacity:1;max-height:32px}
@@ -324,15 +335,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .grat.key{stroke:rgba(20,22,26,.2)}
 .grat.eq{stroke:rgba(27,73,200,.28);stroke-width:1.5}
 
-.node-halo{fill:rgba(27,73,200,.14);opacity:0;transition:opacity .7s var(--ease)}
+.node-halo{fill:rgba(27,73,200,.14);opacity:0;transition:opacity .3s var(--ease)}
 .node-ring{fill:none;stroke:rgba(27,73,200,.72);stroke-width:2.4;
   transform-box:fill-box;transform-origin:center;transform:scale(.82);opacity:.65;
-  transition:transform .7s var(--ease),opacity .7s var(--ease),stroke .5s}
-.node-core{fill:#2B3038;transition:fill .45s,r .45s var(--ease)}
+  transition:transform .3s var(--ease),opacity .3s var(--ease),stroke .25s}
+.node-core{fill:#2B3038;transition:fill .22s,r .22s var(--ease)}
 /* Six names printed at once turned the map into a diagram. Only the one
    you are on is lettered; the rest are in the index beside it. */
 .node-tag{font-family:var(--m);font-weight:400;font-size:23px;letter-spacing:.2em;
-  fill:var(--fg);opacity:0;transition:fill .45s,opacity .55s var(--ease)}
+  fill:var(--fg);opacity:0;transition:fill .22s,opacity .26s var(--ease)}
 .node-hit{cursor:pointer}
 .node.hq .node-ring{opacity:.9}
 .node.hq .node-core{fill:var(--blue)}
@@ -344,7 +355,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 
 .arc{fill:none;stroke:rgba(27,73,200,.5);stroke-width:2.2;
   stroke-dasharray:var(--L);stroke-dashoffset:var(--L);
-  transition:stroke-dashoffset 2.4s var(--ease),stroke .5s,stroke-width .5s}
+  transition:stroke-dashoffset 2.4s var(--ease),stroke .24s,stroke-width .24s}
 .map-hold.lit .arc{stroke-dashoffset:0}
 .arc.on{stroke:rgba(27,73,200,.95);stroke-width:3.2}
 .pulse{fill:var(--blue);opacity:.9}
@@ -383,14 +394,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .sol-list{border-top:1px solid var(--hair)}
 .sol{width:100%;display:grid;grid-template-columns:46px minmax(0,1fr);gap:clamp(10px,1.4vw,20px);
   align-items:baseline;padding:clamp(15px,2.6vh,30px) 0;border-bottom:1px solid var(--hair);
-  position:relative;transition:opacity .5s var(--ease),padding-left .55s var(--ease)}
+  position:relative;transition:opacity .3s var(--ease),transform .3s var(--ease)}
 .sol::before{content:"";position:absolute;left:0;top:50%;width:2px;height:0;background:var(--blue);
   transform:translateY(-50%);transition:height .5s var(--ease)}
 .sol .idx{font-family:var(--m);font-weight:300;font-size:10px;letter-spacing:.2em;color:var(--fg-4);transition:color .5s}
 .sol .nm{font-family:var(--d);font-weight:300;text-transform:uppercase;
   font-size:clamp(17px,2.15vw,34px);line-height:1.04;letter-spacing:-.006em;
   color:var(--fg-3);transition:color .5s var(--ease)}
-.sol.on{padding-left:15px}
+.sol.on{transform:translateX(15px)}
 .sol.on::before{height:54%}
 .sol.on .idx{color:var(--blue)}
 .sol.on .nm{color:var(--fg)}
@@ -410,6 +421,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 #industries{position:relative;z-index:10}
 .ind-rail{height:560vh;position:relative}
 .ind-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 42%}
+@media (max-width:1040px){.ind-stage{grid-template-columns:1fr;grid-template-rows:38% minmax(0,1fr)}}
 .ind-visual{position:relative;overflow:hidden;border-left:1px solid var(--hair)}
 .ind-visual .ph{opacity:0;transition:opacity 1.15s var(--ease)}
 .ind-visual .ph.on{opacity:1}
@@ -431,8 +443,18 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .ind-meter i{position:absolute;left:0;top:0;height:1px;background:var(--fg);width:var(--p,0%)}
 @media (max-width:900px){
   .ind-stage{grid-template-columns:1fr}
-  .ind-visual{position:absolute;inset:0;border:0;opacity:.3;z-index:0}
-  .ind-copy{grid-column:1;padding-right:var(--gut)}
+  /* At 30% behind the type the photographs were barely there. They get
+     their own band at the top of the frame instead, at full strength, and
+     the words keep a clean ivory field underneath. */
+  .ind-visual{position:relative;inset:auto;border:0;opacity:1;z-index:0;grid-row:1;
+    border-bottom:1px solid var(--hair)}
+  .ind-visual::after{background:linear-gradient(180deg,rgba(5,6,9,.18),rgba(5,6,9,0) 46%,rgba(5,6,9,.1))}
+  /* centred in the leftover room the copy floated with a gap above and
+     below it; it sits up under the picture instead. This has to live here,
+     after the base rule — the same override earlier in the sheet lost to
+     the shorthand `padding` and to justify-content:center. */
+  .ind-copy{grid-column:1;padding-right:var(--gut);
+    justify-content:flex-start;padding-top:clamp(22px,4vh,40px)}
 }
 
 /* ═══ 07 CAPABILITIES ══════════════════════════════════════ */
@@ -574,6 +596,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .aw-strip::-webkit-scrollbar{display:none}
 .aw-strip figure{position:relative;flex:0 0 clamp(220px,27vw,360px);
   height:clamp(150px,18vw,240px);margin:0;overflow:hidden;scroll-snap-align:start}
+/* These are photographs of people holding an award. Faces sit in the upper
+   third of the frame, so a centred crop takes the tops of their heads off
+   as the box gets shallower — bias the crop upward. (These rules lived in
+   the Global Offices block and were removed with it; they belong here.) */
+.aw-frame .ph img,.aw-strip figure .ph img{object-position:50% 34%}
+@media (max-width:860px){.aw-frame .ph img,.aw-strip figure .ph img{object-position:50% 30%}}
 .aw-strip figure .ph img{filter:saturate(1) contrast(1.01) brightness(1.02);transition:opacity 1.3s var(--ease),filter .8s var(--ease),transform 1.4s var(--ease)}
 .aw-strip figure:hover .ph img{filter:saturate(1.1) brightness(1.1);transform:scale(1.04)}
 @media (max-width:860px){
@@ -581,78 +609,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
   /* stack them so each emblem gets the full column width and stays legible.
      flex-basis 0 would collapse the height once the axis turns vertical */
   .aw-shots{flex-direction:column;gap:8px}
-  .aw-frame{flex:0 0 auto;height:clamp(118px,30vw,158px)}
+  /* These are group photographs of people receiving an award. At 118–158px
+     the frame was shallower than the people in it and took the tops of
+     their heads off however the crop was biased — the box has to be tall
+     enough to hold them. */
+  .aw-frame{flex:0 0 auto;height:clamp(230px,58vw,320px)}
+  .aw-strip figure{flex:0 0 clamp(240px,70vw,320px);height:clamp(200px,52vw,260px)}
   .yr .yl{font-size:0}
   .yr:nth-child(3n+1) .yl{font-size:8px}
 }
 
-/* ═══ 11 GLOBAL OFFICES ════════════════════════════════════ */
-/* Same grammar as Solutions, one chapter later: a numbered index and a
-   single large city. No six-panel wall, no rotated country names. */
-#offices{position:relative;z-index:10;padding:clamp(80px,16vh,220px) var(--gut) clamp(80px,14vh,190px)}
-.of-reach{margin-top:clamp(20px,3vh,34px);display:flex;flex-wrap:wrap;align-items:baseline;
-  justify-content:space-between;gap:14px 40px;padding-bottom:clamp(16px,2.4vh,26px);
-  border-bottom:1px solid var(--hair)}
-.of-reach-tag{font-family:var(--m);font-weight:400;font-size:10px;letter-spacing:.3em;
-  text-transform:uppercase;color:var(--blue);margin:0;white-space:nowrap}
-.of-grid{margin-top:clamp(30px,5vh,64px);display:grid;
-  grid-template-columns:minmax(0,.6fr) minmax(0,1.4fr);gap:clamp(26px,4.6vw,84px);align-items:start}
-.of-nav{border-top:1px solid var(--hair)}
-.of-item{width:100%;display:grid;grid-template-columns:46px minmax(0,1fr);gap:clamp(10px,1.4vw,20px);
-  align-items:baseline;padding:clamp(14px,2.4vh,28px) 0;border-bottom:1px solid var(--hair);
-  position:relative;transition:opacity .5s var(--ease),padding-left .55s var(--ease)}
-.of-item::before{content:"";position:absolute;left:0;top:50%;width:2px;height:0;background:var(--blue);
-  transform:translateY(-50%);transition:height .5s var(--ease)}
-.of-item .n{font-family:var(--m);font-weight:300;font-size:10px;letter-spacing:.2em;color:var(--fg-4);transition:color .5s}
-.of-item .c{font-family:var(--d);font-weight:300;text-transform:uppercase;
-  font-size:clamp(16px,2vw,30px);line-height:1.04;color:var(--fg-3);transition:color .5s var(--ease)}
-.of-item.on{padding-left:15px}
-.of-item.on::before{height:54%}
-.of-item.on .n{color:var(--blue)}
-.of-item.on .c{color:var(--fg)}
-.of-nav:hover .of-item:not(.on){opacity:.46}
-.of-view{margin:0}
-.of-shots{position:relative;aspect-ratio:12/5;overflow:hidden;background:var(--plate);border:1px solid var(--hair)}
-.of-shots .ph{opacity:0;transform:scale(1.04);transition:opacity 1s var(--ease),transform 1.7s var(--ease)}
-.of-shots .ph.on{opacity:1;transform:scale(1)}
-/* every city is normalised to this exact 3:2 frame during the build, so
-   nothing is cropped again here — they all sit identically composed */
-/* held back so the city settles into the page instead of glaring out of it */
-.of-shots .ph img{object-position:50% 50%;filter:saturate(.95) contrast(.99) brightness(.98)}
-/* These are photographs of people holding an award. Faces sit in the upper
-   third of the frame, so as the box gets shallower a centred crop takes the
-   tops of their heads off — bias the crop upward instead. */
-.aw-frame .ph img,.aw-strip figure .ph img{object-position:50% 34%}
-@media (max-width:860px){.aw-frame .ph img,.aw-strip figure .ph img{object-position:50% 28%}}
-.of-shots::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:linear-gradient(180deg,rgba(5,6,9,.32),rgba(5,6,9,0) 32%,rgba(5,6,9,0) 64%,rgba(5,6,9,.4))}
-.of-info{margin-top:clamp(18px,2.6vh,30px);display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,clamp(240px,30%,340px));
-  gap:clamp(16px,3vw,56px);align-items:end}
-.of-info .role{font-family:var(--m);font-weight:400;font-size:10.5px;
-  letter-spacing:.28em;text-transform:uppercase;color:var(--blue);margin:0 0 12px}
-.of-info h3{font-family:var(--d);font-weight:400;text-transform:uppercase;
-  font-size:clamp(26px,3.8vw,62px);line-height:.9;letter-spacing:-.02em;margin:0;color:var(--fg);white-space:nowrap}
-.of-info address{font-style:normal;font-family:var(--m);font-weight:300;font-size:11.5px;
-  line-height:1.8;letter-spacing:.1em;color:var(--fg-2);margin-top:14px}
-/* a small instrument panel: label left, value right, hairline between */
-.of-meta{margin:0;display:flex;flex-direction:column}
-.of-meta div{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
-  padding:9px 0;border-top:1px solid var(--hair)}
-.of-meta dt{font-family:var(--m);font-weight:300;font-size:9.5px;letter-spacing:.24em;
-  text-transform:uppercase;color:var(--fg-3);margin:0;white-space:nowrap}
-.of-meta dd{margin:0;font-family:var(--b);font-weight:400;font-size:12.5px;
-  color:var(--fg);text-align:right;letter-spacing:.02em}
-.of-meta .mono{font-family:var(--m);font-weight:400;font-size:11.5px;letter-spacing:.08em;
-  font-variant-numeric:tabular-nums}
-.of-meta em{font-style:normal;font-family:var(--m);font-size:10px;letter-spacing:.16em;color:var(--fg-3)}
-@media (max-width:900px){
-  .of-grid{grid-template-columns:1fr;gap:26px}
-  /* keep the same strip on phones, so the build-time framing survives */
-  .of-shots{aspect-ratio:2/1}
-  .of-info{grid-template-columns:1fr;gap:18px;align-items:start}
-  .of-info h3{white-space:normal}
-}
 /* ═══ 12 INSIGHTS ══════════════════════════════════════════ */
 #insights{position:relative;z-index:10;padding:clamp(70px,13vh,180px) var(--gut)}
 .ins{display:grid;grid-template-columns:52px minmax(0,1fr) minmax(0,.66fr);gap:clamp(12px,3vw,48px);align-items:baseline;padding:clamp(18px,3.6vh,44px) 0;border-top:1px solid var(--hair)}
@@ -748,6 +714,34 @@ body.cur #cd,body.cur #cr{opacity:1}
 
   /* wrapped footer links were left-aligning under a centred row */
   footer .fl{justify-content:center}
+
+  /* Nine stacked cards, each a title over a caption, made a wall of words.
+     One line apiece — name left, discipline right — reads as an index. */
+  .cap-cells{border-left:0;border-top:0}
+  .cap{flex-direction:row;align-items:baseline;justify-content:space-between;
+       gap:14px;padding:15px 0;border-right:0;border-bottom:1px solid var(--hair)}
+  .cap b{font-size:15px;padding-right:0;flex:1 1 auto}
+  .cap span{margin-top:0;padding-top:0;flex:0 0 auto;text-align:right;font-size:9.5px}
+  .cap::after{display:none}
+  .cap:hover{background:none}
+
+  /* The quote is the loudest thing in the room on a laptop and was reduced
+     to caption size on a phone. It wraps now rather than shrinking. */
+  .ab-line{font-size:clamp(28px,7.6vw,44px);line-height:1.04;margin-bottom:10px}
+  .ab-name{font-size:clamp(20px,5.4vw,26px)}
+  .ab-side{margin-top:clamp(24px,5vh,40px)}
+
+  /* the spacers above were tuned for a laptop's vertical room */
+  .sp{height:16px}
+  .sp-s{height:14px}
+  #scale{padding-top:clamp(28px,5vh,60px)}
+
+  /* Careers closes with 9vh of padding and the map opened with another 9vh
+     on top of it, so the two sections were separated by a screenful of
+     nothing. One gap between them, not two. */
+  .car-copy{padding-bottom:clamp(34px,6vh,60px)}
+  #global{padding-top:clamp(30px,5vh,64px)}
+  #careers{min-height:auto}
 }
 
 /* ── mobile performance ──────────────────────────────────────
@@ -760,7 +754,6 @@ body.cur #cd,body.cur #cr{opacity:1}
   [data-r]{transition-duration:.62s}
   .ph img{transition-duration:.7s}
   .sol-shots .ph{transition:opacity .6s var(--ease),transform .9s var(--ease)}
-  .of-shots .ph{transition:opacity .6s var(--ease),transform .95s var(--ease)}
   .ind-visual .ph{transition-duration:.65s}
   .aw-strip figure .ph img{transition:opacity .7s var(--ease),filter .5s var(--ease),transform .7s var(--ease)}
   .arc{transition:stroke-dashoffset 1.4s var(--ease),stroke .4s,stroke-width .4s}
@@ -816,7 +809,7 @@ body.cur #cd,body.cur #cr{opacity:1}
     <a href="#solutions">Solutions</a><a href="#industries">Industries</a><a href="#global">Global</a>
     <a href="#expertise">Expertise</a><a href="#about">About</a><a href="#awards">Awards</a>
     <a href="#careers">Careers</a><a href="#insights">Insights</a><a href="#contact">Contact</a>
-    <button id="navGroup" aria-haspopup="dialog" aria-expanded="false">ITCAN Group</button>
+    <button id="navGroup" aria-haspopup="dialog" aria-expanded="false">ITCAN Group <i class="beta">Beta</i></button>
   </div>
   <button id="burger" aria-expanded="false">Menu</button>
 </nav>
@@ -827,7 +820,7 @@ body.cur #cd,body.cur #cr{opacity:1}
   <a href="#expertise">Expertise</a><a href="#about">About</a><a href="#awards">Awards</a>
   <a href="#careers">Careers</a><a href="#insights">Insights</a><a href="#contact">Contact</a>
   <button id="groupOpen" aria-haspopup="dialog" aria-expanded="false">
-    <span class="gk">Six countries</span>
+    <span class="gk">Six countries &middot; Beta</span>
     <span class="gn">ITCAN Group</span>
   </button>
 </div>
@@ -835,7 +828,7 @@ body.cur #cd,body.cur #cr{opacity:1}
 <!-- ══ ITCAN GROUP — country selector ══ -->
 <div id="group" role="dialog" aria-label="ITCAN Group" aria-modal="true" hidden>
   <div class="gh">
-    <p class="lbl">ITCAN Group</p>
+    <p class="lbl">ITCAN Group <i class="beta">Beta</i></p>
     <h2 class="gh-t">Six locations.<br>One global network.</h2>
     <address class="gh-hq">Headquarters &mdash; 30 Cecil Street, Prudential Tower, Singapore 049712</address>
     <button id="groupClose" aria-label="Close ITCAN Group">Close</button>
@@ -872,7 +865,7 @@ body.cur #cd,body.cur #cr{opacity:1}
 <!-- ══ 03 SCALE ══ -->
 <section id="scale" aria-label="Scale">
   <p class="lbl" data-r>The measure of the organisation</p>
-  <div style="height:clamp(24px,5vh,64px)"></div>
+  <div class="sp"></div>
   <div class="stat a" data-r>
     <span class="stat-n" data-count="4000" data-suffix="+">0</span>
     <div class="sm"><b>Specialists</b><span class="body-s">Consultants, engineers, architects and service leads across the group.</span></div>
@@ -1001,7 +994,8 @@ body.cur #cd,body.cur #cr{opacity:1}
 <!-- ══ 12 INSIGHTS ══ -->
 <section id="insights" aria-label="Insights">
   <p class="lbl" data-r>Insights</p>
-  <div style="height:clamp(20px,4.4vh,52px)"></div>
+  <h2 class="h-md" data-r style="--dl:60ms;margin-top:16px;max-width:17ch">How we think<br>about the work.</h2>
+  <div class="sp sp-s"></div>
   <article class="ins" data-r>
     <span class="lbl-n">01</span><h3>Modernisation without disruption</h3>
     <p class="body-s">Sequencing, not technology, decides whether a transformation lands.</p>
