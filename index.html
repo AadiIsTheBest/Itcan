@@ -380,6 +380,22 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .map-read .v{font-family:var(--d);font-weight:400;text-transform:uppercase;
   font-size:clamp(24px,3.4vw,50px);line-height:1;letter-spacing:.01em;color:var(--fg)}
 .map-read .dd{font-family:var(--m);font-weight:300;font-size:10px;letter-spacing:.16em;color:var(--fg-2)}
+/* the offices are where ITCAN works from; these are where the clients are,
+   and they reach well past the map's frame */
+.g-reach{margin:clamp(16px,2.6vh,26px) 0 0;padding:0 var(--gut);font-family:var(--m);
+  font-weight:300;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--fg-3)}
+.mkt{list-style:none;margin:clamp(26px,4.4vh,52px) 0 0;padding:clamp(20px,3vh,30px) var(--gut) 0;
+  border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:6px clamp(14px,2vw,30px)}
+.mkt li{font-family:var(--m);font-weight:300;font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--fg-4)}
+.map-read .ent{display:block;margin-top:7px;font-family:var(--m);font-weight:400;font-size:9px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--fg-3)}
+.map-read .adr{display:block;margin-top:9px;font-style:normal;font-family:var(--b);font-weight:400;
+  font-size:12.5px;line-height:1.62;color:var(--fg-2);max-width:34ch}
+.map-read .tel-l{display:block;margin-top:7px}
+.map-read .tel{font-family:var(--m);font-weight:400;font-size:11px;letter-spacing:.1em;
+  color:var(--fg-2);border-bottom:1px solid var(--hair-2);transition:color .4s var(--ease)}
+.map-read .tel:hover{color:var(--blue)}
 /* Side by side needs width. Below that the index sits above the map,
    which is how this section has always read on a phone. */
 @media (max-width:920px){
@@ -437,6 +453,19 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
   .sol-shots{aspect-ratio:16/10}
   .sol-desc{min-height:0}
 }
+/* The six service lines above say what the work is; these four say how a
+   client takes it on. One quiet band, so the list stays the subject. */
+.eng{margin-top:clamp(40px,7vh,96px);padding-top:clamp(22px,3.4vh,34px);border-top:1px solid var(--hair)}
+.eng-h{margin:0 0 clamp(18px,2.8vh,28px);font-family:var(--m);font-weight:400;font-size:9px;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--fg-4)}
+.eng-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(16px,2.6vw,46px)}
+.eng-i b{display:block;font-family:var(--d);font-weight:300;text-transform:uppercase;
+  font-size:clamp(13px,1.15vw,17px);line-height:1.18;letter-spacing:.01em;color:var(--fg)}
+.eng-i span{display:block;margin-top:9px;font-family:var(--b);font-weight:400;
+  font-size:clamp(12px,.86vw,13.5px);line-height:1.6;color:var(--fg-2)}
+@media (max-width:860px){.eng-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}}
+@media (max-width:520px){.eng-grid{grid-template-columns:1fr;gap:18px}}
+
 /* ═══ 06 INDUSTRIES ════════════════════════════════════════ */
 #industries{position:relative;z-index:10}
 .ind-rail{height:560vh;position:relative}
@@ -716,6 +745,23 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 #contact{position:relative;z-index:10;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
          padding:clamp(60px,11vh,140px) var(--gut) 0;background:var(--bg)}
 #contact h2{max-width:14ch}
+/* three columns of plain fact under the closing line — no form, because a
+   static page cannot receive one, and a dead form is worse than none */
+.ct-rail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(18px,3vw,56px);margin-top:clamp(34px,6vh,70px);text-align:left;
+  width:min(100%,780px);padding-top:clamp(20px,3vh,30px);border-top:1px solid var(--hair)}
+.ct-k{font-family:var(--m);font-weight:400;font-size:9px;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--fg-4);margin:0 0 10px}
+.ct-v{display:block;font-family:var(--d);font-weight:300;text-transform:uppercase;
+  font-size:clamp(14px,1.35vw,20px);letter-spacing:.01em;color:var(--fg);
+  transition:color .45s var(--ease)}
+.ct-v:hover{color:var(--blue)}
+.ct-s,.ct-a{margin:9px 0 0;font-style:normal;font-family:var(--b);font-weight:400;
+  font-size:12.5px;line-height:1.62;color:var(--fg-2)}
+@media (max-width:640px){
+  .ct-rail{grid-template-columns:1fr;gap:22px;text-align:center;justify-items:center}
+  .ct-a{text-align:center}
+}
 /* the mark that opened the page closes it */
 #endMark{margin-top:clamp(48px,10vh,120px);display:flex;flex-direction:column;align-items:center;gap:clamp(16px,2.6vh,26px)}
 .em-mark{width:clamp(30px,4.4vw,50px);height:auto;display:block;fill:var(--fg-3);opacity:.85}
@@ -767,6 +813,12 @@ body.cur #cd,body.cur #cr{opacity:1}
   .loc .r{font-size:9.5px}
   #groupOpen .gk{font-size:10px}
   .mg-h{font-size:9.5px}
+  /* the new contact and engagement blocks follow the same phone rules as
+     everything else: nothing under 9.5px, nothing under 44px to tap */
+  .eng-h,.ct-k{font-size:9.5px}
+  .pr-kind{font-size:9.5px;padding:6px 10px}
+  .ct-v{padding:10px 0;font-size:17px}
+  .map-read .tel{display:inline-block;padding:14px 0}
   .gp-m{font-size:10px}
 
   footer .fl a{display:inline-block;padding:15px 0}
@@ -1004,6 +1056,15 @@ body.cur #cd,body.cur #cr{opacity:1}
       <p class="sol-desc" id="solDesc"></p>
     </div>
   </div>
+  <div class="eng" data-r style="--dl:120ms">
+    <p class="eng-h">Ways to engage</p>
+    <div class="eng-grid">
+      <div class="eng-i"><b>Staff augmentation</b><span>Specialists embedded in your team. You keep technical direction.</span></div>
+      <div class="eng-i"><b>Managed delivery teams</b><span>A team run by ITCAN against an agreed scope.</span></div>
+      <div class="eng-i"><b>Contract &amp; permanent placement</b><span>Hiring, for a defined term or for good.</span></div>
+      <div class="eng-i"><b>Outsourcing &amp; consulting</b><span>A function or a programme, held end to end.</span></div>
+    </div>
+  </div>
 </section>
 
 
@@ -1220,6 +1281,7 @@ body.cur #cd,body.cur #cr{opacity:1}
     <p class="lbl" data-r>Global network</p>
     <h2 class="h-lg" data-r style="--dl:80ms;margin-top:18px;max-width:14ch">Built to work<br>across borders.</h2>
   </div>
+  <p class="g-reach" data-r style="--dl:100ms">Six offices. Clients in nine markets.</p>
   <div class="g-body">
     <div class="loc-list" id="locList" data-r></div>
     <div class="map-hold" id="mapHold" data-r style="--dl:120ms">
@@ -1241,12 +1303,32 @@ body.cur #cd,body.cur #cr{opacity:1}
       <div class="map-read" id="mapRead"></div>
     </div>
   </div>
+  <ul class="mkt" data-r style="--dl:140ms" aria-label="Client markets">
+    <li>South East Asia</li><li>China</li><li>Japan</li><li>Philippines</li>
+    <li>Middle East</li><li>United Kingdom</li><li>Europe</li>
+    <li>United States</li><li>Canada</li>
+  </ul>
 </section>
 
 <!-- ══ 14 CONTACT ══ -->
 <section id="contact" aria-label="Contact">
   <h2 class="h-lg" data-r>Let's build what's next.</h2>
-  <a class="cta" href="#top" data-r style="--dl:110ms;align-self:center">Contact ITCAN <span aria-hidden="true">&rarr;</span></a>
+  <a class="cta" href="mailto:info@itcan.biz?subject=Enquiry%20for%20ITCAN" data-r style="--dl:110ms;align-self:center">Contact ITCAN <span aria-hidden="true">&rarr;</span></a>
+  <div class="ct-rail" data-r style="--dl:170ms">
+    <div class="ct-col">
+      <p class="ct-k">Email</p>
+      <a class="ct-v" href="mailto:info@itcan.biz">info@itcan.biz</a>
+    </div>
+    <div class="ct-col">
+      <p class="ct-k">Telephone</p>
+      <a class="ct-v" href="tel:+6566046805">+65 6604 6805</a>
+      <p class="ct-s">Fax +65 6604 6825</p>
+    </div>
+    <div class="ct-col">
+      <p class="ct-k">Headquarters</p>
+      <address class="ct-a">30 Cecil Street<br>Prudential Tower, #18-08<br>Singapore 049712</address>
+    </div>
+  </div>
   <div id="endMark" data-r style="--dl:240ms">
     <svg class="em-mark" viewBox="0 0 97 99" aria-hidden="true">
       <rect x="1.2" y="16" width="18.6" height="67"/>
@@ -1581,13 +1663,30 @@ function about(){
 /* ════════════════════════════════════════════════════════════
    GLOBAL MAP — 10px per degree, lon 65→160E, lat 40N→40S
    ════════════════════════════════════════════════════════════ */
+/* Street addresses, telephone numbers and the two registered entity names
+   come from the two concept sites the board selected — the first real
+   office data we have had for anywhere but Singapore. */
 var OF=[
- {c:'Singapore',city:'Singapore',role:'Headquarters',lat:1.35,lon:103.82,tz:'GMT+8',off:8,k:'cSG',addr:['30 Cecil Street','Prudential Tower','Singapore 049712'],alt:'The Singapore skyline at night',dx:0,dy:52},
- {c:'Indonesia',city:'Jakarta',role:'Delivery Centre',lat:-6.21,lon:106.85,tz:'GMT+7',off:7,k:'cID',alt:'The Jakarta skyline at night',dx:20,dy:46},
- {c:'Malaysia',city:'Kuala Lumpur',role:'Delivery Centre',lat:3.14,lon:101.69,tz:'GMT+8',off:8,k:'cMY',alt:'The Kuala Lumpur skyline at night',dx:-20,dy:-28},
- {c:'India',city:'New Delhi',role:'Engineering Hub',lat:28.61,lon:77.21,tz:'GMT+5:30',off:5.5,k:'cIN',alt:'The New Delhi skyline at night',dx:0,dy:-32},
- {c:'Australia',city:'Sydney',role:'Client Services',lat:-33.87,lon:151.21,tz:'GMT+10',off:10,k:'cAU',alt:'The Sydney skyline at night',dx:-18,dy:48},
- {c:'Hong Kong',city:'Hong Kong SAR',role:'Regional Office',lat:22.32,lon:114.17,tz:'GMT+8',off:8,k:'cHK',alt:'The Hong Kong skyline at night',dx:20,dy:-28}
+ {c:'Singapore',city:'Singapore',role:'Headquarters',lat:1.35,lon:103.82,tz:'GMT+8',off:8,k:'cSG',
+  addr:['30 Cecil Street','Prudential Tower, #18-08','Singapore 049712'],tel:'+65 6604 6805',fax:'+65 6604 6825',
+  alt:'The Singapore skyline at night',dx:0,dy:52},
+ {c:'Indonesia',city:'Jakarta',role:'Delivery Centre',lat:-6.21,lon:106.85,tz:'GMT+7',off:7,k:'cID',
+  ent:'PT ITCAN Business Solutions',
+  addr:['10th Floor, Room 1037, Lippo Thamrin','Jl. M.H. Thamrin No.20, Kebon Sirih','Menteng, Jakarta 10350'],
+  alt:'The Jakarta skyline at night',dx:20,dy:46},
+ {c:'Malaysia',city:'Kuala Lumpur',role:'Delivery Centre',lat:3.14,lon:101.69,tz:'GMT+8',off:8,k:'cMY',
+  addr:['Unit B-5-4, 5th Floor, Northpoint Office Suites','MidValley City, No.1 Medan Syed Putra Utara','59200 Kuala Lumpur'],tel:'+603 2282 7000',
+  alt:'The Kuala Lumpur skyline at night',dx:-20,dy:-28},
+ {c:'India',city:'New Delhi',role:'Engineering Hub',lat:28.61,lon:77.21,tz:'GMT+5:30',off:5.5,k:'cIN',
+  ent:'ITCAN India Private Limited',
+  addr:['1209 New Delhi House','27 Barakhamba Road, Connaught Place','New Delhi 110001'],
+  alt:'The New Delhi skyline at night',dx:0,dy:-32},
+ {c:'Australia',city:'Sydney',role:'Client Services',lat:-33.87,lon:151.21,tz:'GMT+10',off:10,k:'cAU',
+  addr:['Suite 7, Level 7, Strathfield Plaza','11 The Boulevarde','Strathfield NSW 2135'],
+  alt:'The Sydney skyline at night',dx:-18,dy:48},
+ {c:'Hong Kong',city:'Hong Kong SAR',role:'Regional Office',lat:22.32,lon:114.17,tz:'GMT+8',off:8,k:'cHK',
+  addr:['Unit 912, 9/F, Two Harbourfront','22 Tak Fung Street, Hunghom','Kowloon'],
+  alt:'The Hong Kong skyline at night',dx:20,dy:-28}
 ];
 var NS='http://www.w3.org/2000/svg';
 function PX(l){return (l-65)*10;} function PY(l){return (40-l)*10;}
@@ -1724,7 +1823,11 @@ function pick(c){
   [].forEach.call(nodesG.children,function(el){el.classList.toggle('on',el.getAttribute('data-c')===c);});
   Object.keys(arcMap).forEach(function(k){arcMap[k].classList.toggle('on',k===c);});
   var now=new Date(),d=new Date(now.getTime()+now.getTimezoneOffset()*6e4+o.off*36e5);
+  var tel=o.tel?'<a class="tel" href="tel:'+o.tel.replace(/[^+0-9]/g,'')+'">'+o.tel+'</a>':'';
   mapRead.innerHTML='<span class="k">'+o.role+'</span><span class="v">'+o.city+'</span>'+
+    (o.ent?'<span class="ent">'+o.ent+'</span>':'')+
+    (o.addr?'<address class="adr">'+o.addr.join('<br>')+'</address>':'')+
+    (tel?'<span class="tel-l">'+tel+'</span>':'')+
     '<span class="dd">'+Math.abs(o.lat).toFixed(2)+'&deg;'+(o.lat>=0?'N':'S')+' &nbsp; '+Math.abs(o.lon).toFixed(2)+'&deg;E &nbsp;&middot;&nbsp; '+
     String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' '+o.tz+'</span>';
 }
