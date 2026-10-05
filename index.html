@@ -122,6 +122,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
      -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 #nav.on{opacity:1;pointer-events:auto}
 #nav .hair{position:absolute;left:var(--gut);right:var(--gut);bottom:0;height:1px;background:var(--hair)}
+/* the same hairline fills as the page is read — scaleX only, so it never
+   costs a layout on the scroll path */
+#nav .prog{position:absolute;left:var(--gut);right:var(--gut);bottom:0;height:1px;
+  background:var(--fg);transform:scaleX(0);transform-origin:0 50%;will-change:transform}
+/* keyboard users land on the content, not the whole nav */
+.skip{position:fixed;top:-60px;left:var(--gut);z-index:95;padding:10px 16px;
+  background:var(--fg);color:var(--bg);font-family:var(--m);font-size:11px;
+  letter-spacing:.18em;text-transform:uppercase;text-decoration:none;
+  transition:top .3s var(--ease)}
+.skip:focus{top:12px}
 #navWord{font-family:var(--d);font-weight:400;font-size:15px;letter-spacing:.44em;margin-right:-.46em;padding-left:38px;color:var(--fg);opacity:0;transition:opacity .8s var(--ease) .1s;white-space:nowrap}
 #nav.on #navWord{opacity:1}
 #navLinks{display:flex;gap:clamp(12px,1.7vw,28px);align-items:center}
@@ -380,14 +390,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .map-read .v{font-family:var(--d);font-weight:400;text-transform:uppercase;
   font-size:clamp(24px,3.4vw,50px);line-height:1;letter-spacing:.01em;color:var(--fg)}
 .map-read .dd{font-family:var(--m);font-weight:300;font-size:10px;letter-spacing:.16em;color:var(--fg-2)}
-/* the offices are where ITCAN works from; these are where the clients are,
-   and they reach well past the map's frame */
+/* one line of framing under the heading, before the map takes over */
 .g-reach{margin:clamp(16px,2.6vh,26px) 0 0;padding:0 var(--gut);font-family:var(--m);
   font-weight:300;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--fg-3)}
-.mkt{list-style:none;margin:clamp(26px,4.4vh,52px) 0 0;padding:clamp(20px,3vh,30px) var(--gut) 0;
-  border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:6px clamp(14px,2vw,30px)}
-.mkt li{font-family:var(--m);font-weight:300;font-size:10px;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--fg-4)}
 .map-read .ent{display:block;margin-top:7px;font-family:var(--m);font-weight:400;font-size:9px;
   letter-spacing:.2em;text-transform:uppercase;color:var(--fg-3)}
 .map-read .adr{display:block;margin-top:9px;font-style:normal;font-family:var(--b);font-weight:400;
@@ -459,10 +464,25 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .eng-h{margin:0 0 clamp(18px,2.8vh,28px);font-family:var(--m);font-weight:400;font-size:9px;
   letter-spacing:.3em;text-transform:uppercase;color:var(--fg-4)}
 .eng-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(16px,2.6vw,46px)}
+.eng-i{display:block;text-decoration:none;position:relative;padding:14px 0 40px;
+  border-top:1px solid var(--hair);min-height:44px;
+  transition:border-color .5s var(--ease)}
+.eng-i em{display:block;font-style:normal;font-family:var(--m);font-weight:400;font-size:9px;
+  letter-spacing:.24em;color:var(--fg-4);margin-bottom:10px;
+  transition:color .5s var(--ease)}
 .eng-i b{display:block;font-family:var(--d);font-weight:300;text-transform:uppercase;
   font-size:clamp(13px,1.15vw,17px);line-height:1.18;letter-spacing:.01em;color:var(--fg)}
 .eng-i span{display:block;margin-top:9px;font-family:var(--b);font-weight:400;
   font-size:clamp(12px,.86vw,13.5px);line-height:1.6;color:var(--fg-2)}
+/* the enquiry affordance sits in reserved space, so revealing it moves nothing */
+.eng-i .eng-go{position:absolute;left:0;bottom:14px;font-style:normal;font-family:var(--m);
+  font-weight:400;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);
+  opacity:0;transform:translateX(-4px);
+  transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.eng-i:hover,.eng-i:focus-visible{border-color:var(--hair-2)}
+.eng-i:hover em,.eng-i:focus-visible em{color:var(--blue)}
+.eng-i:hover .eng-go,.eng-i:focus-visible .eng-go{opacity:1;transform:none}
+@media (hover:none){.eng-i .eng-go{opacity:.75;transform:none}}
 @media (max-width:860px){.eng-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}}
 @media (max-width:520px){.eng-grid{grid-template-columns:1fr;gap:18px}}
 
@@ -618,6 +638,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .aw-items div{display:flex;gap:clamp(8px,1.4vw,20px);align-items:baseline;padding:12px 0;border-top:1px solid var(--hair);
               font-family:var(--d);font-weight:300;text-transform:uppercase;font-size:clamp(13px,1.7vw,25px);line-height:1.16;color:var(--fg-2)}
 .aw-items div em{font-style:normal;font-family:var(--m);font-size:8px;letter-spacing:.2em;color:var(--blue);flex:none;padding-top:5px;width:24px}
+/* the award title carries through to its own citation on itcan.biz; the
+   arrow only firms up on hover so the list still reads as a list */
+.aw-items div a.aw-link{color:inherit;text-decoration:none;display:inline-flex;align-items:baseline;
+  gap:.42em;transition:color .5s var(--ease)}
+.aw-items div a.aw-link svg{flex:none;width:.46em;height:.46em;fill:none;stroke:currentColor;
+  stroke-width:2.4;opacity:0;transform:translate(-2px,2px);
+  transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.aw-items div a.aw-link:hover,.aw-items div a.aw-link:focus-visible{color:var(--blue)}
+.aw-items div a.aw-link:hover svg,.aw-items div a.aw-link:focus-visible svg{opacity:.85;transform:none}
+@media (hover:none){.aw-items div a.aw-link svg{opacity:.5;transform:none}}
 /* ITCAN people receiving the award, with the award's own emblem as a
    small credential chip — the marks are dark ink, so they need a light
    plate to read at all against the page */
@@ -768,16 +798,47 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 #endMark .w{font-family:var(--d);font-weight:200;font-size:clamp(18px,3vw,40px);letter-spacing:.46em;margin-right:-.46em;color:var(--fg-3)}
 /* three balanced fields on one baseline, stacked and centred on phones */
 footer{position:relative;z-index:10;margin-top:clamp(26px,5vh,58px);
-       padding:clamp(20px,3vh,30px) var(--gut) clamp(22px,3vh,30px);
-       border-top:1px solid var(--hair);
+       padding:clamp(34px,5vh,58px) var(--gut) clamp(22px,3vh,30px);
+       border-top:1px solid var(--hair)}
+footer *{font-family:var(--m);font-weight:300;font-size:9.5px;letter-spacing:.2em;
+       text-transform:uppercase;color:var(--fg-3);margin:0;line-height:1.5}
+/* the directory: our own sections on the left, the corporate site on the right */
+.f-dir{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(20px,3vw,48px);
+       padding-bottom:clamp(28px,4vh,48px)}
+.f-dir h3{font-size:9px;letter-spacing:.3em;color:var(--fg);margin-bottom:14px}
+.f-dir ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:9px}
+.f-dir a{text-decoration:none;display:inline-block;min-height:20px;
+       transition:color .4s var(--ease)}
+.f-dir a:hover,.f-dir a:focus-visible{color:var(--fg)}
+.f-dir .ex::after{content:"\2197";margin-left:.45em;opacity:.55}
+.f-dir address{font-style:normal;letter-spacing:.14em;line-height:1.85}
+/* the closing row */
+.f-base{border-top:1px solid var(--hair);padding-top:clamp(16px,2.4vh,24px);
        display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px 20px}
-footer *{font-family:var(--m);font-weight:300;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-3);margin:0;line-height:1.5}
-footer .fl{display:flex;flex-wrap:wrap;gap:clamp(12px,1.6vw,22px);justify-self:center}
-footer .fl a:hover{color:var(--fg-2)}
-footer p:last-child{justify-self:end;text-align:right}
+.f-base .fl{display:flex;flex-wrap:wrap;gap:clamp(12px,1.6vw,22px);justify-self:center}
+.f-base .fl a{text-decoration:none;transition:color .4s var(--ease)}
+.f-base .fl a:hover{color:var(--fg-2)}
+.f-base .f-top{justify-self:end;text-align:right;text-decoration:none;
+       transition:color .4s var(--ease)}
+.f-base .f-top:hover{color:var(--fg)}
+@media (max-width:860px){
+  /* two columns hold all the way down to a narrow phone; on touch the links
+     get real rows so each one clears the 44px target */
+  .f-dir{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 22px}
+  .f-dir h3{font-size:9.5px;margin-bottom:6px}
+  .f-dir ul{gap:0}
+  .f-dir li{border-top:1px solid var(--hair)}
+  .f-dir li:has(address){border-top:0;padding-top:12px}
+  .f-dir a{display:flex;align-items:center;min-height:44px;padding:4px 0}
+  .f-dir address{padding-bottom:4px}
+}
 @media (max-width:720px){
-  footer{grid-template-columns:1fr;justify-items:center;text-align:center;gap:14px}
-  footer p:last-child{justify-self:center;text-align:center}
+  .f-base{grid-template-columns:1fr;justify-items:center;text-align:center;gap:14px}
+  .f-base .f-top{justify-self:center;text-align:center;min-height:44px;
+    display:flex;align-items:center}
+}
+@media (max-width:330px){
+  .f-dir{grid-template-columns:1fr;gap:20px}
 }
 
 /* ═══ CURSOR ═══════════════════════════════════════════════ */
@@ -957,8 +1018,10 @@ body.cur #cd,body.cur #cr{opacity:1}
 </div>
 
 <!-- ══ navigation ══ -->
+<a class="skip" href="#hero">Skip to content</a>
 <nav id="nav" aria-label="Primary">
   <span class="hair"></span>
+  <span class="prog" id="navProg" aria-hidden="true"></span>
   <a id="navWord" href="#top">ITCAN</a>
   <div id="navLinks">
     <a href="#solutions">Solutions</a><a href="#industries">Industries</a><a href="#global">Global</a>
@@ -1006,7 +1069,7 @@ body.cur #cd,body.cur #cr{opacity:1}
   <div class="ov-stage">
     <div id="ovWord">
       <div class="w">ITCAN</div>
-      <div class="t">Leading Technology &middot; Lasting Relationship</div>
+      <div class="t">Technology &middot; People &middot; Possibility</div>
     </div>
     <div id="cue"><span class="cl">Scroll to explore</span><span class="tr"><i></i></span></div>
   </div>
@@ -1019,8 +1082,8 @@ body.cur #cd,body.cur #cr{opacity:1}
     <p class="lbl" data-r>Global technology partner</p>
     <h1 class="h-xl" data-r style="--dl:90ms"><span>Technology</span><span>that moves</span><span>business.</span></h1>
     <div class="hero-base">
-      <p class="body-s" data-r style="--dl:200ms;max-width:38ch">IT staffing and technology solutions &mdash; skilled consultants and dedicated teams, deployed so clients resolve business and operational challenges fast.</p>
-      <p class="lbl-n" data-r style="--dl:260ms">SINGAPORE &nbsp;/&nbsp; SIX DELIVERY HUBS &nbsp;/&nbsp; <span class="nb">NINE MARKETS</span></p>
+      <p class="body-s" data-r style="--dl:200ms;max-width:38ch">Consulting, engineering and managed technology services for organisations operating across borders, regulators and time zones.</p>
+      <p class="lbl-n" data-r style="--dl:260ms">SINGAPORE &nbsp;/&nbsp; SIX MARKETS &nbsp;/&nbsp; <span class="nb">ASIA&ndash;PACIFIC</span></p>
     </div>
   </div>
 </section>
@@ -1029,20 +1092,16 @@ body.cur #cd,body.cur #cr{opacity:1}
 <section id="scale" aria-label="Scale">
   <div class="sp"></div>
   <div class="stat a" data-r>
-    <span class="stat-n" data-count="1200">0</span>
-    <div class="sm"><b>Consultants</b><span class="body-s">Technology specialists deployed to clients and partners.</span></div>
+    <span class="stat-n" data-count="4000" data-suffix="+">0</span>
+    <div class="sm"><b>Specialists</b><span class="body-s">Consultants, engineers, architects and service leads across the group.</span></div>
   </div>
   <div class="stat b" data-r style="--dl:80ms">
-    <div class="sm"><b>Projects delivered</b><span class="body-s">Programmes carried from planning through to live operation.</span></div>
-    <span class="stat-n" data-count="960">0</span>
+    <div class="sm"><b>Global locations</b><span class="body-s">One operating network across Asia&ndash;Pacific.</span></div>
+    <span class="stat-n" data-count="6">0</span>
   </div>
   <div class="stat a" data-r style="--dl:160ms">
-    <span class="stat-n" data-count="480">0</span>
-    <div class="sm"><b>Clients served</b><span class="body-s">Across nine markets, staffed from six delivery hubs.</span></div>
-  </div>
-  <div class="stat b" data-r style="--dl:240ms">
-    <div class="sm"><b>Years in business</b><span class="body-s">Singapore headquartered since 2007.</span></div>
-    <span class="stat-n" data-count="19">0</span>
+    <span class="stat-n" data-count="20" data-suffix="+">0</span>
+    <div class="sm"><b>Years</b><span class="body-s">Two decades of continuous delivery.</span></div>
   </div>
 </section>
 
@@ -1063,10 +1122,26 @@ body.cur #cd,body.cur #cr{opacity:1}
   <div class="eng" data-r style="--dl:120ms">
     <p class="eng-h">Ways to engage</p>
     <div class="eng-grid">
-      <div class="eng-i"><b>Staff augmentation</b><span>Specialists embedded in your team. You keep technical direction.</span></div>
-      <div class="eng-i"><b>Managed delivery teams</b><span>A team run by ITCAN against an agreed scope.</span></div>
-      <div class="eng-i"><b>Contract &amp; permanent placement</b><span>Hiring, for a defined term or for good.</span></div>
-      <div class="eng-i"><b>Outsourcing &amp; consulting</b><span>A function or a programme, held end to end.</span></div>
+      <a class="eng-i" href="mailto:info@itcan.biz?subject=Enquiry%20%E2%80%94%20Staff%20augmentation"
+         aria-label="Enquire about Staff augmentation">
+        <em>01</em><b>Staff augmentation</b><span>Specialists embedded in your team. You keep technical direction.</span>
+        <i class="eng-go">Enquire <span aria-hidden="true">&rarr;</span></i>
+      </a>
+      <a class="eng-i" href="mailto:info@itcan.biz?subject=Enquiry%20%E2%80%94%20Managed%20delivery%20teams"
+         aria-label="Enquire about Managed delivery teams">
+        <em>02</em><b>Managed delivery teams</b><span>A team run by ITCAN against an agreed scope.</span>
+        <i class="eng-go">Enquire <span aria-hidden="true">&rarr;</span></i>
+      </a>
+      <a class="eng-i" href="mailto:info@itcan.biz?subject=Enquiry%20%E2%80%94%20Contract%20%26%20permanent%20placement"
+         aria-label="Enquire about Contract & permanent placement">
+        <em>03</em><b>Contract &amp; permanent placement</b><span>Hiring, for a defined term or for good.</span>
+        <i class="eng-go">Enquire <span aria-hidden="true">&rarr;</span></i>
+      </a>
+      <a class="eng-i" href="mailto:info@itcan.biz?subject=Enquiry%20%E2%80%94%20Outsourcing%20%26%20consulting"
+         aria-label="Enquire about Outsourcing & consulting">
+        <em>04</em><b>Outsourcing &amp; consulting</b><span>A function or a programme, held end to end.</span>
+        <i class="eng-go">Enquire <span aria-hidden="true">&rarr;</span></i>
+      </a>
     </div>
   </div>
 </section>
@@ -1116,7 +1191,7 @@ body.cur #cd,body.cur #cr{opacity:1}
     <p class="lbl" data-r>Expertise</p>
     <h2 class="h-lg" data-r style="--dl:80ms;margin-top:16px;max-width:15ch">Different expertise.<br>One partner.</h2>
     <div class="exp-say" data-r style="--dl:170ms">
-      <p>Consulting</p><p>Engineering</p><p>Delivery</p><p>Managed service</p><p>Six hubs</p>
+      <p>Consulting</p><p>Engineering</p><p>Delivery</p><p>Managed service</p><p>Six markets</p>
     </div>
   </div>
   <span class="credit">ITCAN &mdash; Enterprise 50 event</span>
@@ -1259,7 +1334,7 @@ body.cur #cd,body.cur #cr{opacity:1}
     <p class="body-s">Sequencing, not technology, decides whether a transformation lands.</p>
   </article>
   <article class="ins" data-r style="--dl:70ms">
-    <span class="lbl-n">02</span><h3>Delivery across nine markets</h3>
+    <span class="lbl-n">02</span><h3>Delivery across six markets</h3>
     <p class="body-s">Accountability for a system in one country, held by a team in another.</p>
   </article>
   <article class="ins" data-r style="--dl:140ms">
@@ -1274,7 +1349,7 @@ body.cur #cd,body.cur #cr{opacity:1}
   <div class="car-copy">
     <p class="lbl" data-r>Careers</p>
     <h2 class="h-lg" data-r style="--dl:70ms;margin-top:18px;max-width:10ch">Build what's next.</h2>
-    <p class="body-l" data-r style="--dl:140ms;margin-top:clamp(18px,3.4vh,38px)">Engineers, consultants, architects and service leads, working from six delivery hubs on the systems organisations depend on.</p>
+    <p class="body-l" data-r style="--dl:140ms;margin-top:clamp(18px,3.4vh,38px)">Engineers, consultants, architects and service leads, working across six markets on the systems organisations depend on.</p>
     <a class="cta" href="#contact" data-r style="--dl:210ms">Explore careers <span aria-hidden="true">&rarr;</span></a>
   </div>
 </section>
@@ -1285,7 +1360,7 @@ body.cur #cd,body.cur #cr{opacity:1}
     <p class="lbl" data-r>Global network</p>
     <h2 class="h-lg" data-r style="--dl:80ms;margin-top:18px;max-width:14ch">Built to work<br>across borders.</h2>
   </div>
-  <p class="g-reach" data-r style="--dl:100ms">Six offices. Clients in nine markets.</p>
+  <p class="g-reach" data-r style="--dl:100ms">Six offices. One operating network across Asia&ndash;Pacific.</p>
   <div class="g-body">
     <div class="loc-list" id="locList" data-r></div>
     <div class="map-hold" id="mapHold" data-r style="--dl:120ms">
@@ -1307,11 +1382,6 @@ body.cur #cd,body.cur #cr{opacity:1}
       <div class="map-read" id="mapRead"></div>
     </div>
   </div>
-  <ul class="mkt" data-r style="--dl:140ms" aria-label="Client markets">
-    <li>South East Asia</li><li>China</li><li>Japan</li><li>Philippines</li>
-    <li>Middle East</li><li>United Kingdom</li><li>Europe</li>
-    <li>United States</li><li>Canada</li>
-  </ul>
 </section>
 
 <!-- ══ 14 CONTACT ══ -->
@@ -1344,9 +1414,51 @@ body.cur #cd,body.cur #cr{opacity:1}
 </section>
 
 <footer>
-  <p>&copy; 2026 ITCAN</p>
-  <div class="fl"><a href="#solutions">Solutions</a><a href="#global">Global</a><a href="#awards">Awards</a><a href="#careers">Careers</a><a href="#contact">Contact</a></div>
-  <p>Concept redesign</p>
+  <!-- A directory, not a wall of links: this page's own sections, the live
+       corporate site for anything that lives there, and the contact details
+       already shown above, repeated where people look for them. -->
+  <div class="f-dir">
+    <div>
+      <h3>This page</h3>
+      <ul>
+        <li><a href="#solutions">Solutions</a></li>
+        <li><a href="#industries">Industries</a></li>
+        <li><a href="#capabilities">Capabilities</a></li>
+        <li><a href="#global">Global network</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>The company</h3>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#awards">Awards</a></li>
+        <li><a href="#press">Press</a></li>
+        <li><a href="#careers">Careers</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>On itcan.biz</h3>
+      <ul>
+        <li><a class="ex" href="https://www.itcan.biz/about-us/" target="_blank" rel="noopener">About us</a></li>
+        <li><a class="ex" href="https://www.itcan.biz/press-release/" target="_blank" rel="noopener">Press releases</a></li>
+        <li><a class="ex" href="https://www.itcan.biz/career/" target="_blank" rel="noopener">Careers</a></li>
+        <li><a class="ex" href="https://www.itcan.biz/" target="_blank" rel="noopener">Employee login</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Get in touch</h3>
+      <ul>
+        <li><a href="mailto:info@itcan.biz">info@itcan.biz</a></li>
+        <li><a href="tel:+6566046805">+65 6604 6805</a></li>
+        <li><address>30 Cecil Street<br>Prudential Tower, #18-08<br>Singapore 049712</address></li>
+      </ul>
+    </div>
+  </div>
+  <div class="f-base">
+    <p>&copy; 2026 ITCAN</p>
+    <div class="fl"><a href="#solutions">Solutions</a><a href="#global">Global</a><a href="#awards">Awards</a><a href="#careers">Careers</a><a href="#contact">Contact</a></div>
+    <a class="f-top" href="#top">Back to top &uarr;</a>
+  </div>
 </footer>
 </main>
 
@@ -1437,6 +1549,7 @@ function geom(){
   if(typeof indRail!=='undefined'&&indRail){G.indTop=docTop(indRail);G.indH=indRail.offsetHeight;}
   if(typeof abRail!=='undefined'&&abRail){G.abTop=docTop(abRail);G.abH=abRail.offsetHeight;}
   if(typeof expSec!=='undefined'&&expSec){G.expTop=docTop(expSec);G.expH=expSec.offsetHeight;}
+  G.scrollMax=Math.max(1,document.documentElement.scrollHeight-innerHeight);
 }
 
 /* Write only when the value actually changes. Assigning an identical
@@ -1534,7 +1647,7 @@ var SOL=[
  ['Customized Solutions','a22','An illuminated glass structure in a dark room',
   'Systems designed to one organisation\u2019s requirements. Integrated, secured and supported end to end.'],
  ['IT Outsourcing','a12','A controlled data environment',
-  'Dedicated teams deployed from six delivery hubs, governed by service levels.'],
+  'Dedicated teams and delivery centres across six markets, governed by service levels.'],
  ['Application Management','a13','A network of connected points over a city',
   'Continuous operation, enhancement and modernisation of the applications the business runs on.'],
  ['Technical Consulting','a17','Network infrastructure above a lit city',
@@ -1671,24 +1784,24 @@ function about(){
    come from the two concept sites the board selected — the first real
    office data we have had for anywhere but Singapore. */
 var OF=[
- {c:'Singapore',city:'Singapore',role:'Global Headquarters',lat:1.35,lon:103.82,tz:'GMT+8',off:8,k:'cSG',
+ {c:'Singapore',city:'Singapore',role:'Headquarters',lat:1.35,lon:103.82,tz:'GMT+8',off:8,k:'cSG',
   addr:['30 Cecil Street','Prudential Tower, #18-08','Singapore 049712'],tel:'+65 6604 6805',fax:'+65 6604 6825',
   alt:'The Singapore skyline at night',dx:0,dy:52},
- {c:'Indonesia',city:'Jakarta',role:'Delivery Hub',lat:-6.21,lon:106.85,tz:'GMT+7',off:7,k:'cID',
+ {c:'Indonesia',city:'Jakarta',role:'Delivery Centre',lat:-6.21,lon:106.85,tz:'GMT+7',off:7,k:'cID',
   ent:'PT ITCAN Business Solutions',
   addr:['10th Floor, Room 1037, Lippo Thamrin','Jl. M.H. Thamrin No.20, Kebon Sirih','Menteng, Jakarta 10350'],
   alt:'The Jakarta skyline at night',dx:20,dy:46},
- {c:'Malaysia',city:'Kuala Lumpur',role:'Delivery Hub',lat:3.14,lon:101.69,tz:'GMT+8',off:8,k:'cMY',
+ {c:'Malaysia',city:'Kuala Lumpur',role:'Delivery Centre',lat:3.14,lon:101.69,tz:'GMT+8',off:8,k:'cMY',
   addr:['Unit B-5-4, 5th Floor, Northpoint Office Suites','MidValley City, No.1 Medan Syed Putra Utara','59200 Kuala Lumpur'],tel:'+603 2282 7000',
   alt:'The Kuala Lumpur skyline at night',dx:-20,dy:-28},
- {c:'India',city:'New Delhi',role:'Delivery Hub',lat:28.61,lon:77.21,tz:'GMT+5:30',off:5.5,k:'cIN',
+ {c:'India',city:'New Delhi',role:'Engineering Hub',lat:28.61,lon:77.21,tz:'GMT+5:30',off:5.5,k:'cIN',
   ent:'ITCAN India Private Limited',
   addr:['1209 New Delhi House','27 Barakhamba Road, Connaught Place','New Delhi 110001'],
   alt:'The New Delhi skyline at night',dx:0,dy:-32},
- {c:'Australia',city:'Sydney',role:'Delivery Hub',lat:-33.87,lon:151.21,tz:'GMT+10',off:10,k:'cAU',
+ {c:'Australia',city:'Sydney',role:'Client Services',lat:-33.87,lon:151.21,tz:'GMT+10',off:10,k:'cAU',
   addr:['Suite 7, Level 7, Strathfield Plaza','11 The Boulevarde','Strathfield NSW 2135'],
   alt:'The Sydney skyline at night',dx:-18,dy:48},
- {c:'Hong Kong',city:'Hong Kong SAR',role:'Delivery Hub',lat:22.32,lon:114.17,tz:'GMT+8',off:8,k:'cHK',
+ {c:'Hong Kong',city:'Hong Kong SAR',role:'Regional Office',lat:22.32,lon:114.17,tz:'GMT+8',off:8,k:'cHK',
   addr:['Unit 912, 9/F, Two Harbourfront','22 Tak Fung Street, Hunghom','Kowloon'],
   alt:'The Hong Kong skyline at night',dx:20,dy:-28}
 ];
@@ -1890,6 +2003,38 @@ var AWALT={
  evE:'ITCAN at an Enterprise 50 award ceremony',
  ls2:'ITCAN receiving the Singapore Enterprise Medal',
  ls3:'ITCAN receiving an award on stage'};
+/* Each award links to its own page on itcan.biz. Verified live; awards with
+   no page on the corporate site simply render without a link. */
+var AWU={
+ "2007|Shell Live Wire Award":"/awards/2007-shell-live-wire-award/",
+ "2007|Enterprise 50 Startup Award":"/awards/2007-enterprise-50-startup-award/",
+ "2008|DBS Singapore Indian Entrepreneur Award (SIEA)":"/awards/2008-dbs-singapore-indian-entrepreneur-award-siea/",
+ "2008|Spirit of Enterprise Awards":"/awards/2008-spirit-of-enterprise-award/",
+ "2009|DBS Singapore Indian Entrepreneur Award (SIEA)":"/awards/2009-dbs-singapore-indian-entrepreneur-award-siea/",
+ "2009|Enterprise 50 Award":"/awards/2009-enterprise-50-award/",
+ "2010|Entrepreneur of the Year Award – A Rotary-ASME Award":"/awards/2010-entrepreneur-of-the-year-award-a-rotary-asme-award/",
+ "2010|Asia Responsible Entrepreneurship Awards":"/awards/2010-asia-responsible-entrepreneurship-awards/",
+ "2011|Enterprise 50 Award":"/awards/2011-enterprise-50-award/",
+ "2011|Asia Pacific Entrepreneurship Award – Outstanding Category":"/awards/2011-asia-pacific-entrepreneurship-award-outstanding-category/",
+ "2012|100 Singapore Excellence Award":"/awards/2012-2013-100-singapore-excellence-award/",
+ "2013|Enterprise 50 Award":"/awards/2013-enterprise-50-awards/",
+ "2013|Midas Touch Asia Platinum Enterprise Award":"/awards/2013-midas-touch-asia-platinum-enterprise-award/",
+ "2014|Singapore Turnover Growth Excellence Award – Infocomm & Communications":"/awards/2014-singapore-turnover-growth-excellence-2014-award-infocomm-communications-2014/",
+ "2014|Asia Excellence Award":"/awards/2014-asia-excellence-award/",
+ "2015|Enterprise 50 Award":"/awards/2015-enterprise-50-award/",
+ "2016|Enterprise 50 Award":"/awards/2016-enterprise-50-awards/",
+ "2017|Enterprise 50 Award":"/awards/2017-enterprise-50-award/",
+ "2017|Dun & Bradstreet Business Eminence Awards":"/awards/2017-dun-bradstreet-business-eminence-awards/",
+ "2018|Singapore Enterprise Medal of Honour":"/awards/2018-singapore-enterprise-medal-of-honour/",
+ "2018|Asia’s Most Trusted Companies Awards":"/awards/2018-asias-most-trusted-companies-awards/",
+ "2019|The BrandLaureate World Best Brands Award":"/awards/2019-the-brand-laureate-world-best-brands-award/",
+ "2019|World’s Greatest Brands & Leaders":"/awards/2019-worlds-greatest-brands-leaders/",
+ "2019|Indian Women of the Year Awards":"/awards/2019-indian-women-of-the-year-awards/",
+ "2021|Enterprise 50 Award":"/awards/2021-enterprise-50-award/",
+ "2022|Enterprise 50 Award — 8th win":"/awards/2022-enterprise-50-award/",
+ "2023|Enterprise 50 Award — 9th consecutive win":"/awards/2023-enterprise-50-award/"
+};
+function AWHREF(y,t){return AWU[y+"|"+t]?"https://www.itcan.biz"+AWU[y+"|"+t]:"";}
 function isE50(t){return /^Enterprise 50 Award/.test(t);}
 (function(){
   var a=document.getElementById('awCount'),b=document.getElementById('awF1'),c=document.getElementById('awF3');
@@ -1912,7 +2057,12 @@ function showYear(y){
   if(awCur===y)return;awCur=y;
   var row=AW.filter(function(r){return r[0]===y;})[0];
   [].forEach.call(awSpine.children,function(el){el.classList.toggle('on',+el.getAttribute('data-y')===y);});
-  var items=row[1].map(function(t){return '<div><em>'+(isE50(t)?'E50':'&nbsp;')+'</em>'+t+'</div>';}).join('');
+  var items=row[1].map(function(t){
+    var u=AWHREF(y,t), lbl=isE50(t)?'E50':'&nbsp;';
+    var body=u?'<a class="aw-link" href="'+u+'" target="_blank" rel="noopener"'+
+               ' aria-label="'+t.replace(/"/g,'&quot;')+' — read the citation on itcan.biz">'+t+
+               '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11"/></svg></a>':t;
+    return '<div><em>'+lbl+'</em>'+body+'</div>';}).join('');
   var ph=row[2],em=row[3];
   var shot='<figure class="aw-frame aw-fade">'+
            '<span class="ph real grain" data-k="'+ph+'"><img alt="'+(AWALT[ph]||'')+'"></span>'+
@@ -1985,8 +2135,16 @@ function expPar(){
 var tick=false;
 /* try/finally matters here: if any one of these throws, `tick` would stay
    true and every scroll-driven effect on the page would freeze for good */
+var navProg=document.getElementById('navProg');
+/* reading progress — arithmetic against geometry cached in geom(), then a
+   single scaleX write. Nothing here reads layout. */
+function progress(){
+  if(!navProg)return;
+  var p=(window.pageYOffset||scrollY)/G.scrollMax;
+  setT(navProg,'scaleX('+(p<0?0:p>1?1:p).toFixed(4)+')');
+}
 function frame(){
-  try{ transit();industries();about();expPar(); }
+  try{ transit();industries();about();expPar();progress(); }
   catch(e){ if(window.console)console.error('frame',e); }
   finally{ tick=false; }
 }
@@ -2071,12 +2229,12 @@ var GROUP_LINKS = {
 };
 
 var GROUP=[
-  {key:'singapore',c:'Singapore',city:'Singapore',   role:'Global Headquarters',    k:'cSG',off:8,  tz:'GMT+8',   alt:'The Singapore skyline at night'},
-  {key:'indonesia',c:'Indonesia',city:'Jakarta',     role:'Delivery Hub', k:'cID',off:7,  tz:'GMT+7',   alt:'The Jakarta skyline at night'},
-  {key:'malaysia', c:'Malaysia', city:'Kuala Lumpur',role:'Delivery Hub', k:'cMY',off:8,  tz:'GMT+8',   alt:'The Kuala Lumpur skyline at night'},
-  {key:'india',    c:'India',    city:'New Delhi',   role:'Delivery Hub', k:'cIN',off:5.5,tz:'GMT+5:30',alt:'The New Delhi skyline at night'},
-  {key:'australia',c:'Australia',city:'Sydney',      role:'Delivery Hub', k:'cAU',off:10, tz:'GMT+10',  alt:'The Sydney skyline at night'},
-  {key:'hongkong', c:'Hong Kong',city:'Hong Kong SAR',role:'Delivery Hub',k:'cHK',off:8,  tz:'GMT+8',   alt:'The Hong Kong skyline at night'}
+  {key:'singapore',c:'Singapore',city:'Singapore',   role:'Headquarters',    k:'cSG',off:8,  tz:'GMT+8',   alt:'The Singapore skyline at night'},
+  {key:'indonesia',c:'Indonesia',city:'Jakarta',     role:'Delivery Centre', k:'cID',off:7,  tz:'GMT+7',   alt:'The Jakarta skyline at night'},
+  {key:'malaysia', c:'Malaysia', city:'Kuala Lumpur',role:'Delivery Centre', k:'cMY',off:8,  tz:'GMT+8',   alt:'The Kuala Lumpur skyline at night'},
+  {key:'india',    c:'India',    city:'New Delhi',   role:'Engineering Hub', k:'cIN',off:5.5,tz:'GMT+5:30',alt:'The New Delhi skyline at night'},
+  {key:'australia',c:'Australia',city:'Sydney',      role:'Client Services', k:'cAU',off:10, tz:'GMT+10',  alt:'The Sydney skyline at night'},
+  {key:'hongkong', c:'Hong Kong',city:'Hong Kong SAR',role:'Regional Office',k:'cHK',off:8,  tz:'GMT+8',   alt:'The Hong Kong skyline at night'}
 ];
 function groupClock(o){
   var now=new Date(),d=new Date(now.getTime()+now.getTimezoneOffset()*6e4+o.off*36e5);
