@@ -445,6 +445,42 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .map-hold.lit .arc{stroke-dashoffset:0}
 .arc.on{stroke:rgba(27,73,200,.95);stroke-width:3.2}
 .pulse{fill:var(--blue);opacity:.9}
+/* Continuous traffic under each route. The single travelling dot reads as
+   one journey; this reads as a network that is always carrying something.
+   stroke-dashoffset only — no layout, no paint of anything but the stroke. */
+.arc-flow{fill:none;stroke:rgba(27,73,200,.34);stroke-width:1.5;
+  stroke-dasharray:5 11;stroke-linecap:round;opacity:0;
+  transition:opacity 1s var(--ease) .6s,stroke .3s}
+.map-hold.lit .arc-flow{opacity:1}
+.arc-flow.on{stroke:rgba(27,73,200,.72);stroke-width:2}
+@keyframes flow{to{stroke-dashoffset:-320}}
+
+/* the readout settles in rather than snapping as you travel the network */
+@keyframes readIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.sol-desc.step{animation:readIn .34s var(--ease) both}
+@media (prefers-reduced-motion:reduce){.sol-desc.step{animation:none!important}}
+.map-read.step>*{animation:readIn .34s var(--ease) both}
+.map-read.step>*:nth-child(2){animation-delay:.03s}
+.map-read.step>*:nth-child(3){animation-delay:.06s}
+.map-read.step>*:nth-child(4){animation-delay:.09s}
+.map-read.step>*:nth-child(5){animation-delay:.12s}
+.map-read.step>*:nth-child(6){animation-delay:.15s}
+
+/* where you are in the network as you scroll through it */
+.g-travel{position:absolute;right:clamp(14px,2.4vw,34px);top:clamp(14px,2.4vw,30px);
+  display:flex;align-items:baseline;gap:7px;font-family:var(--m);font-weight:400;
+  font-size:9.5px;letter-spacing:.26em;color:var(--fg-4);pointer-events:none}
+.g-travel b{font-weight:400;color:var(--blue);font-variant-numeric:tabular-nums}
+.g-travel i{font-style:normal;opacity:.55}
+.g-travel .bar{display:block;width:clamp(34px,5vw,58px);height:1px;background:var(--hair-2);
+  position:relative;align-self:center;margin-left:3px}
+.g-travel .bar b{position:absolute;left:0;top:0;height:1px;background:var(--blue);
+  transform-origin:0 50%;transform:scaleX(0);transition:transform .45s var(--ease)}
+@media (max-width:620px){.g-travel{display:none}}
+@media (prefers-reduced-motion:reduce){
+  .arc-flow{animation:none!important}
+  .map-read.step>*{animation:none!important}
+}
 
 .map-read{position:absolute;left:clamp(14px,2.4vw,34px);bottom:clamp(14px,2.4vw,30px);
   display:flex;flex-direction:column;gap:7px;pointer-events:none;max-width:82%}
@@ -1442,6 +1478,7 @@ body.cur #cd,body.cur #cr{opacity:1}
         <g id="arcs"></g><g id="pulses"></g><g id="nodes"></g>
       </svg>
       <div class="map-read" id="mapRead"></div>
+      <div class="g-travel" id="gTravel" aria-hidden="true"><b>01</b><i>/ 06</i><span class="bar"><b id="gBar"></b></span></div>
     </div>
   </div>
 </section>
@@ -1703,6 +1740,8 @@ function geom(){
   if(typeof abRail!=='undefined'&&abRail){G.abTop=docTop(abRail);G.abH=abRail.offsetHeight;}
   if(typeof expSec!=='undefined'&&expSec){G.expTop=docTop(expSec);G.expH=expSec.offsetHeight;}
   G.scrollMax=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+  var gs=document.getElementById('global');
+  if(gs){G.gloTop=docTop(gs);G.gloH=gs.offsetHeight;}
 }
 
 /* Write only when the value actually changes. Assigning an identical
@@ -1829,6 +1868,7 @@ function pickSol(i){
   [].forEach.call(solList.children,function(el,n){el.classList.toggle('on',n===i);});
   [].forEach.call(solShots.children,function(el,n){el.classList.toggle('on',n===i);});
   solDesc.textContent=SOL[i][3];
+  solDesc.classList.remove('step');void solDesc.offsetWidth;solDesc.classList.add('step');
   fill(solShots.children[i]);
 }
 pickSol(0);
@@ -2030,7 +2070,7 @@ for(var lat2=40;lat2>=-40;lat2-=10){
 }
 
 var arcsG=document.getElementById('arcs'),pulseG=document.getElementById('pulses'),
-    nodesG=document.getElementById('nodes'),arcMap={};
+    nodesG=document.getElementById('nodes'),arcMap={},flowMap={};
 OF.slice(1).forEach(function(o,i){
   var x1=PX(OF[0].lon),y1=PY(OF[0].lat),x2=PX(o.lon),y2=PY(o.lat);
   var dx=x2-x1,dy=y2-y1,d=Math.sqrt(dx*dx+dy*dy);
@@ -2040,6 +2080,13 @@ OF.slice(1).forEach(function(o,i){
   p.setAttribute('id',id);p.setAttribute('d',dd);p.setAttribute('class','arc');
   p.style.setProperty('--L',(d*1.3).toFixed(0));
   arcsG.appendChild(p);arcMap[o.c]=p;
+  /* the traffic layer: same path, dashed, drifting forever */
+  if(!RM){
+    var fl=document.createElementNS(NS,'path');
+    fl.setAttribute('d',dd);fl.setAttribute('class','arc-flow');
+    fl.style.animation='flow '+(13+i*2.2).toFixed(1)+'s linear infinite';
+    arcsG.appendChild(fl);flowMap[o.c]=fl;
+  }
   /* a single point of light travelling the route — movement, not decoration */
   if(!RM){
     var dot=document.createElementNS(NS,'circle');
@@ -2071,19 +2118,21 @@ OF.forEach(function(o){
   hit.setAttribute('cx',x);hit.setAttribute('cy',y);hit.setAttribute('r',52);
   hit.setAttribute('fill','transparent');hit.setAttribute('class','node-hit');
   g.appendChild(halo);g.appendChild(ring);g.appendChild(core);g.appendChild(tag);g.appendChild(hit);
-  g.addEventListener('mouseenter',function(){pick(o.c);});
-  g.addEventListener('click',function(){pick(o.c);});
+  g.addEventListener('mouseenter',function(){travelLock=Date.now()+5000;pick(o.c);});
+  g.addEventListener('click',function(){travelLock=Date.now()+5000;pick(o.c);});
   nodesG.appendChild(g);
 });
 
 var locList=document.getElementById('locList'),mapRead=document.getElementById('mapRead'),curLoc=null;
+var gTravel=document.getElementById('gTravel'),gBar=document.getElementById('gBar');
 OF.forEach(function(o,i){
   var b=document.createElement('button');
   b.className='loc';b.setAttribute('data-c',o.c);
   b.innerHTML='<span class="n">'+String(i+1).padStart(2,'0')+'</span><span><span class="c">'+o.c+'</span><span class="r">'+o.role+' &middot; '+o.city+'</span></span>';
-  b.addEventListener('mouseenter',function(){pick(o.c);});
-  b.addEventListener('focus',function(){pick(o.c);});
-  b.addEventListener('click',function(){pick(o.c);});
+  function take(){travelLock=Date.now()+5000;pick(o.c);}
+  b.addEventListener('mouseenter',take);
+  b.addEventListener('focus',take);
+  b.addEventListener('click',take);
   locList.appendChild(b);
 });
 function pick(c){
@@ -2092,6 +2141,7 @@ function pick(c){
   [].forEach.call(locList.children,function(el){el.classList.toggle('on',el.getAttribute('data-c')===c);});
   [].forEach.call(nodesG.children,function(el){el.classList.toggle('on',el.getAttribute('data-c')===c);});
   Object.keys(arcMap).forEach(function(k){arcMap[k].classList.toggle('on',k===c);});
+  Object.keys(flowMap).forEach(function(k){flowMap[k].classList.toggle('on',k===c);});
   var now=new Date(),d=new Date(now.getTime()+now.getTimezoneOffset()*6e4+o.off*36e5);
   var tel=o.tel?'<a class="tel" href="tel:'+o.tel.replace(/[^+0-9]/g,'')+'">'+o.tel+'</a>':'';
   mapRead.innerHTML='<span class="k">'+o.role+'</span><span class="v">'+o.city+'</span>'+
@@ -2100,6 +2150,14 @@ function pick(c){
     (tel?'<span class="tel-l">'+tel+'</span>':'')+
     '<span class="dd">'+Math.abs(o.lat).toFixed(2)+'&deg;'+(o.lat>=0?'N':'S')+' &nbsp; '+Math.abs(o.lon).toFixed(2)+'&deg;E &nbsp;&middot;&nbsp; '+
     String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' '+o.tz+'</span>';
+  /* retrigger the stagger: innerHTML gives new nodes, so simply re-adding
+     the class is enough — no reflow hack needed */
+  mapRead.classList.remove('step');void mapRead.offsetWidth;mapRead.classList.add('step');
+  var ix=OF.map(function(x){return x.c;}).indexOf(c);
+  if(gTravel){
+    gTravel.firstChild.textContent=String(ix+1).padStart(2,'0');
+    if(gBar)gBar.style.transform='scaleX('+((ix+1)/OF.length).toFixed(3)+')';
+  }
 }
 pick('Singapore');
 var mapHold=document.getElementById('mapHold');
@@ -2288,6 +2346,23 @@ function expPar(){
 var tick=false;
 /* try/finally matters here: if any one of these throws, `tick` would stay
    true and every scroll-driven effect on the page would freeze for good */
+/* ── travel the network on scroll ───────────────────────────
+   Scrolling the Global section walks the six offices in order, the way
+   you would read them. Pointing at one takes over for a few seconds, then
+   scroll resumes control. Arithmetic only — the geometry was read in
+   geom(), and pick() returns immediately unless the office actually
+   changed, so a frame that changes nothing writes nothing. */
+var travelLock=0;
+function travel(){
+  if(!G.gloH||RM)return;
+  if(Date.now()<travelLock)return;
+  var y=(window.pageYOffset||scrollY)+innerHeight*0.62;
+  var p=(y-G.gloTop)/G.gloH;
+  if(p<0||p>1.08)return;
+  var i=Math.floor(p*OF.length*1.04);
+  if(i<0)i=0; if(i>=OF.length)i=OF.length-1;
+  if(OF[i].c!==curLoc)pick(OF[i].c);
+}
 var navProg=document.getElementById('navProg');
 /* reading progress — arithmetic against geometry cached in geom(), then a
    single scaleX write. Nothing here reads layout. */
@@ -2297,7 +2372,7 @@ function progress(){
   setT(navProg,'scaleX('+(p<0?0:p>1?1:p).toFixed(4)+')');
 }
 function frame(){
-  try{ transit();industries();about();expPar();progress(); }
+  try{ transit();industries();about();expPar();progress();travel(); }
   catch(e){ if(window.console)console.error('frame',e); }
   finally{ tick=false; }
 }
