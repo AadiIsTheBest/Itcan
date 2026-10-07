@@ -461,6 +461,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
   border-left:1px solid var(--hair);min-height:min(66vh,660px);
   background:radial-gradient(58% 56% at 46% 50%, rgba(27,73,200,.07), rgba(244,242,237,0) 74%)}
 #map{position:absolute;inset:0;width:100%;height:100%}
+/* ═══ CAMERA ═══ the map travels to the office you are on rather than
+   sitting still while a caption changes beside it. One transform on one
+   group, so the whole move is composited — nothing re-lays-out.
+   --k is the zoom; type and strokes divide by it so they stay put. */
+#cam{transform-origin:0 0;transition:transform 1.15s cubic-bezier(.22,1,.36,1)}
+#cam .node-tag{font-size:calc(23px / var(--k,1))}
+.arc,.arc-flow,.node-ring{vector-effect:non-scaling-stroke}
+@media (prefers-reduced-motion:reduce){#cam{transition:none}}
 .land-dot{fill:rgba(20,22,26,.30)}
 .grat{stroke:rgba(20,22,26,.13);stroke-width:1.2}
 .grat.key{stroke:rgba(20,22,26,.2)}
@@ -528,7 +536,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 }
 
 .map-read{position:absolute;left:clamp(14px,2.4vw,34px);bottom:clamp(14px,2.4vw,30px);
-  display:flex;flex-direction:column;gap:7px;pointer-events:none;max-width:82%}
+  display:flex;flex-direction:column;gap:7px;pointer-events:none;max-width:min(82%,420px);
+  transition:left 1.15s cubic-bezier(.22,1,.36,1),right 1.15s cubic-bezier(.22,1,.36,1)}
+/* when the office sits on the left of the frame the panel moves right, so
+   the card never covers the place it is describing — the concept's panel
+   does cover it */
+@media (min-width:921px){
+  .map-read.flip{left:auto;right:clamp(14px,2.4vw,34px);text-align:right;align-items:flex-end}
+  .map-read.flip .adr{text-align:right}
+}
 .map-read .k{font-family:var(--m);font-weight:400;font-size:9.5px;letter-spacing:.3em;
   text-transform:uppercase;color:var(--blue)}
 .map-read .v{font-family:var(--d);font-weight:400;text-transform:uppercase;
@@ -1544,12 +1560,14 @@ body.cur #cd,body.cur #cr{opacity:1}
           <mask id="fdm"><rect x="-170" y="-60" width="1290" height="920" fill="url(#fd)"/></mask>
           <pattern id="dt" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.05" fill="rgba(20,22,26,.18)"/></pattern>
         </defs>
-        <g mask="url(#fdm)">
-          <rect x="-170" y="-60" width="1290" height="920" fill="url(#dt)"/>
-          <g id="grat"></g>
-          <g id="land"></g>
+        <g id="cam">
+          <g mask="url(#fdm)">
+            <rect x="-170" y="-60" width="1290" height="920" fill="url(#dt)"/>
+            <g id="grat"></g>
+            <g id="land"></g>
+          </g>
+          <g id="arcs"></g><g id="pulses"></g><g id="nodes"></g>
         </g>
-        <g id="arcs"></g><g id="pulses"></g><g id="nodes"></g>
       </svg>
       <div class="map-read" id="mapRead"></div>
       <div class="g-travel" id="gTravel" aria-hidden="true"><b>01</b><i>/ 06</i><span class="bar"><b id="gBar"></b></span></div>
@@ -2269,6 +2287,7 @@ function pick(c){
   /* retrigger the stagger: innerHTML gives new nodes, so simply re-adding
      the class is enough — no reflow hack needed */
   mapRead.classList.remove('step');void mapRead.offsetWidth;mapRead.classList.add('step');
+  moveCamera(o);
   var ix=OF.map(function(x){return x.c;}).indexOf(c);
   if(gTravel){
     gTravel.firstChild.textContent=String(ix+1).padStart(2,'0');
@@ -2276,6 +2295,28 @@ function pick(c){
   }
 }
 pick('Singapore');
+/* ── the camera ────────────────────────────────────────────
+   Centre the office in the frame and lean in a little. The viewBox is
+   "-170 -60 1290 920", so its middle is (475, 400); to put a point there
+   at zoom k we translate by centre - k*point. Everything is one transform
+   on one group, and type and strokes divide the zoom back out so they
+   never swell. */
+var cam=document.getElementById('cam');
+var VB={cx:475,cy:400},ZOOM=1.52;
+function moveCamera(o){
+  if(!cam)return;
+  if(RM){cam.style.transform='';cam.style.removeProperty('--k');return;}
+  var px=PX(o.lon),py=PY(o.lat),k=ZOOM;
+  cam.style.setProperty('--k',k);
+  cam.style.transform='translate('+(VB.cx-k*px).toFixed(1)+'px,'+(VB.cy-k*py).toFixed(1)+'px) scale('+k+')';
+  /* keep the card off the place it is describing */
+  if(mapRead)mapRead.classList.toggle('flip',px<VB.cx);
+}
+
+/* pick('Singapore') ran before this group was resolved, so frame the
+   opening office now that it is */
+(function(){var o=OF.filter(function(x){return x.c===curLoc;})[0];if(o)moveCamera(o);})();
+
 var mapHold=document.getElementById('mapHold');
 if('IntersectionObserver' in window){
   var mObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){mapHold.classList.add('lit');mObs.unobserve(e.target);}});},{threshold:.2});
