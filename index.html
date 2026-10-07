@@ -238,6 +238,51 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
   border-top:1px solid var(--hair);font-family:var(--m);font-weight:300;font-size:9.5px;
   letter-spacing:.16em;text-transform:uppercase;color:var(--fg-4);line-height:1.8}
 /* the legal row in the footer */
+/* ═══ ENQUIRY ═══ the one thing the concepts had that we did not: somewhere
+   to actually start the conversation. It composes a message in the reader's
+   own mail client on submit — nothing is posted anywhere, so the page still
+   collects nothing. */
+.enq{margin:clamp(34px,5.4vh,64px) auto 0;width:min(100%,760px);text-align:left}
+.enq-h{font-family:var(--m);font-weight:400;font-size:9.5px;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--fg-4);margin:0 0 clamp(16px,2.4vh,22px);text-align:center}
+.enq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,2vw,20px)}
+.enq-f{display:flex;flex-direction:column;gap:7px}
+.enq-f.wide{grid-column:1/-1}
+.enq-f label{font-family:var(--m);font-weight:400;font-size:9px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--fg-3)}
+.enq-f input,.enq-f select,.enq-f textarea{
+  font-family:var(--b);font-weight:300;font-size:14px;line-height:1.6;color:var(--fg);
+  background:transparent;border:0;border-bottom:1px solid var(--hair-2);
+  padding:10px 2px;min-height:44px;border-radius:0;-webkit-appearance:none;appearance:none;
+  transition:border-color .4s var(--ease)}
+.enq-f textarea{min-height:92px;resize:vertical;line-height:1.7}
+.enq-f select{background-image:linear-gradient(45deg,transparent 50%,var(--fg-3) 50%),
+  linear-gradient(135deg,var(--fg-3) 50%,transparent 50%);
+  background-position:calc(100% - 11px) 50%,calc(100% - 6px) 50%;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:26px;cursor:pointer}
+.enq-f input:focus,.enq-f select:focus,.enq-f textarea:focus{
+  outline:none;border-bottom-color:var(--blue)}
+.enq-f input::placeholder,.enq-f textarea::placeholder{color:var(--fg-4);opacity:.75}
+.enq-go{margin-top:clamp(20px,3vh,28px);display:flex;align-items:center;
+  justify-content:space-between;gap:16px;flex-wrap:wrap}
+.enq-sub{font-family:var(--m);font-weight:400;font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--bg);background:var(--fg);border:0;
+  padding:15px 26px;min-height:48px;cursor:pointer;
+  transition:background .4s var(--ease),transform .3s var(--ease)}
+.enq-sub:hover{background:var(--blue)}
+.enq-sub:active{transform:translateY(1px)}
+.enq-note{font-family:var(--b);font-weight:300;font-size:12px;line-height:1.6;
+  color:var(--fg-4);margin:0;max-width:40ch}
+.enq-say{margin:14px 0 0;font-family:var(--b);font-weight:400;font-size:13px;
+  color:var(--blue);min-height:19px}
+@media (max-width:620px){
+  .enq-grid{grid-template-columns:1fr;gap:16px}
+  .enq-go{flex-direction:column;align-items:stretch}
+  .enq-sub{width:100%}
+  .enq-f label{font-size:9.5px}
+  /* 16px or iOS zooms the page in the moment the field takes focus */
+  .enq-f input,.enq-f select,.enq-f textarea{font-size:16px}
+}
 .f-legal{display:flex;flex-wrap:wrap;gap:4px clamp(12px,1.6vw,22px);justify-self:start}
 .f-legal button{font-family:var(--m);font-weight:300;font-size:9.5px;letter-spacing:.2em;
   text-transform:uppercase;color:var(--fg-3);padding:0;text-align:left;
@@ -562,28 +607,41 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .eng{margin-top:clamp(40px,7vh,96px);padding-top:clamp(22px,3.4vh,34px);border-top:1px solid var(--hair)}
 .eng-h{margin:0 0 clamp(18px,2.8vh,28px);font-family:var(--m);font-weight:400;font-size:9px;
   letter-spacing:.3em;text-transform:uppercase;color:var(--fg-4)}
-.eng-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(16px,2.6vw,46px)}
-.eng-i{display:block;text-decoration:none;position:relative;padding:14px 0 40px;
-  border-top:1px solid var(--hair);min-height:44px;
-  transition:border-color .5s var(--ease)}
-.eng-i em{display:block;font-style:normal;font-family:var(--m);font-weight:400;font-size:9px;
-  letter-spacing:.24em;color:var(--fg-4);margin-bottom:10px;
-  transition:color .5s var(--ease)}
-.eng-i b{display:block;font-family:var(--d);font-weight:300;text-transform:uppercase;
+.eng-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:0 clamp(20px,3vw,46px);align-items:start}
+.eng-i{border-top:1px solid var(--hair);transition:border-color .5s var(--ease)}
+.eng-i:hover,.eng-i:focus-within{border-color:var(--hair-2)}
+.eng-top{display:flex;align-items:baseline;gap:12px;width:100%;padding:16px 0;
+  min-height:44px;text-align:left;cursor:pointer;background:none;border:0}
+.eng-top em{font-style:normal;font-family:var(--m);font-weight:400;font-size:9px;
+  letter-spacing:.24em;color:var(--fg-4);flex:none;transition:color .4s var(--ease)}
+.eng-top b{flex:1;font-family:var(--d);font-weight:300;text-transform:uppercase;
   font-size:clamp(13px,1.15vw,17px);line-height:1.18;letter-spacing:.01em;color:var(--fg)}
-.eng-i span{display:block;margin-top:9px;font-family:var(--b);font-weight:400;
-  font-size:clamp(12px,.86vw,13.5px);line-height:1.6;color:var(--fg-2)}
-/* the enquiry affordance sits in reserved space, so revealing it moves nothing */
-.eng-i .eng-go{position:absolute;left:0;bottom:14px;font-style:normal;font-family:var(--m);
-  font-weight:400;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);
-  opacity:0;transform:translateX(-4px);
-  transition:opacity .45s var(--ease),transform .45s var(--ease)}
-.eng-i:hover,.eng-i:focus-visible{border-color:var(--hair-2)}
-.eng-i:hover em,.eng-i:focus-visible em{color:var(--blue)}
-.eng-i:hover .eng-go,.eng-i:focus-visible .eng-go{opacity:1;transform:none}
-@media (hover:none){.eng-i .eng-go{opacity:.75;transform:none}}
-@media (max-width:860px){.eng-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}}
-@media (max-width:520px){.eng-grid{grid-template-columns:1fr;gap:18px}}
+/* the +/x sign, drawn rather than typed so it can rotate */
+.eng-pm{position:relative;flex:none;width:11px;height:11px;align-self:center;
+  transition:transform .42s var(--ease)}
+.eng-pm::before,.eng-pm::after{content:"";position:absolute;background:var(--fg-3);
+  transition:background .4s var(--ease)}
+.eng-pm::before{left:0;top:5px;width:11px;height:1px}
+.eng-pm::after{left:5px;top:0;width:1px;height:11px}
+.eng-i.open .eng-pm{transform:rotate(135deg)}
+.eng-i.open .eng-top em{color:var(--blue)}
+.eng-i.open .eng-pm::before,.eng-i.open .eng-pm::after{background:var(--blue)}
+.eng-b{overflow:hidden;padding:0 0 18px}
+.eng-b[hidden]{display:none}
+.eng-i.open .eng-b{animation:readIn .36s var(--ease) both}
+.eng-b span{display:block;font-family:var(--b);font-weight:400;
+  font-size:clamp(12px,.86vw,13.5px);line-height:1.68;color:var(--fg-2);max-width:44ch}
+.eng-b .eng-go{margin-top:13px;font-family:var(--m);font-weight:400;font-size:9px;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--blue);background:none;border:0;
+  padding:8px 0;min-height:44px;cursor:pointer;white-space:nowrap;text-align:left;
+  display:inline-flex;align-items:center;gap:.5em;transition:opacity .35s var(--ease)}
+.eng-b .eng-go:hover{opacity:.62}
+@media (prefers-reduced-motion:reduce){
+  .eng-i.open .eng-b{animation:none!important}
+  .eng-pm{transition:none!important}
+}
+@media (max-width:520px){.eng-grid{grid-template-columns:1fr;gap:0}}
 
 /* ═══ 06 INDUSTRIES ════════════════════════════════════════ */
 #industries{position:relative;z-index:10}
@@ -1220,26 +1278,42 @@ body.cur #cd,body.cur #cr{opacity:1}
   <div class="eng" data-r style="--dl:120ms">
     <p class="eng-h">Ways to engage</p>
     <div class="eng-grid">
-      <a class="eng-i" href="mailto:info@itcan.biz?subject=Enquiry%20%E2%80%94%20Staff%20augmentation"
-         aria-label="Enquire about Staff augmentation">
-        <em>01</em><b>Staff augmentation</b><span>Specialists embedded in your team. You keep technical direction.</span>
-        <i class="eng-go">Enquire <span aria-hidden="true">&rarr;</span></i>
-      </a>
-      <a class="eng-i" href="mailto:info@itcan.biz?subject=Enquiry%20%E2%80%94%20Managed%20delivery%20teams"
-         aria-label="Enquire about Managed delivery teams">
-        <em>02</em><b>Managed delivery teams</b><span>A team run by ITCAN against an agreed scope.</span>
-        <i class="eng-go">Enquire <span aria-hidden="true">&rarr;</span></i>
-      </a>
-      <a class="eng-i" href="mailto:info@itcan.biz?subject=Enquiry%20%E2%80%94%20Contract%20%26%20permanent%20placement"
-         aria-label="Enquire about Contract & permanent placement">
-        <em>03</em><b>Contract &amp; permanent placement</b><span>Hiring, for a defined term or for good.</span>
-        <i class="eng-go">Enquire <span aria-hidden="true">&rarr;</span></i>
-      </a>
-      <a class="eng-i" href="mailto:info@itcan.biz?subject=Enquiry%20%E2%80%94%20Outsourcing%20%26%20consulting"
-         aria-label="Enquire about Outsourcing & consulting">
-        <em>04</em><b>Outsourcing &amp; consulting</b><span>A function or a programme, held end to end.</span>
-        <i class="eng-go">Enquire <span aria-hidden="true">&rarr;</span></i>
-      </a>
+      <div class="eng-i">
+        <button class="eng-top" type="button" aria-expanded="false" aria-controls="engb1">
+          <em>01</em><b>Staff augmentation</b><i class="eng-pm" aria-hidden="true"></i>
+        </button>
+        <div class="eng-b" id="engb1" hidden>
+          <span>Specialists embedded in your team. You keep technical direction.</span>
+          <button class="eng-go" type="button" data-model="Staff augmentation">Discuss this model <span aria-hidden="true">&rarr;</span></button>
+        </div>
+      </div>
+      <div class="eng-i">
+        <button class="eng-top" type="button" aria-expanded="false" aria-controls="engb2">
+          <em>02</em><b>Managed delivery teams</b><i class="eng-pm" aria-hidden="true"></i>
+        </button>
+        <div class="eng-b" id="engb2" hidden>
+          <span>A team run by ITCAN against an agreed scope.</span>
+          <button class="eng-go" type="button" data-model="Managed delivery teams">Discuss this model <span aria-hidden="true">&rarr;</span></button>
+        </div>
+      </div>
+      <div class="eng-i">
+        <button class="eng-top" type="button" aria-expanded="false" aria-controls="engb3">
+          <em>03</em><b>Contract &amp; permanent placement</b><i class="eng-pm" aria-hidden="true"></i>
+        </button>
+        <div class="eng-b" id="engb3" hidden>
+          <span>Hiring, for a defined term or for good.</span>
+          <button class="eng-go" type="button" data-model="Contract & permanent placement">Discuss this model <span aria-hidden="true">&rarr;</span></button>
+        </div>
+      </div>
+      <div class="eng-i">
+        <button class="eng-top" type="button" aria-expanded="false" aria-controls="engb4">
+          <em>04</em><b>Outsourcing &amp; consulting</b><i class="eng-pm" aria-hidden="true"></i>
+        </button>
+        <div class="eng-b" id="engb4" hidden>
+          <span>A function or a programme, held end to end.</span>
+          <button class="eng-go" type="button" data-model="Outsourcing & consulting">Discuss this model <span aria-hidden="true">&rarr;</span></button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1487,6 +1561,44 @@ body.cur #cd,body.cur #cr{opacity:1}
 <section id="contact" aria-label="Contact">
   <h2 class="h-lg" data-r>Let's build what's next.</h2>
   <a class="cta" href="mailto:info@itcan.biz?subject=Enquiry%20for%20ITCAN" data-r style="--dl:110ms;align-self:center">Contact ITCAN <span aria-hidden="true">&rarr;</span></a>
+
+  <form class="enq" id="enq" data-r style="--dl:140ms" novalidate>
+    <p class="enq-h">Or tell us what you are building</p>
+    <div class="enq-grid">
+      <div class="enq-f">
+        <label for="enqName">Your name</label>
+        <input id="enqName" name="name" type="text" autocomplete="name" placeholder="Full name" required>
+      </div>
+      <div class="enq-f">
+        <label for="enqMail">Work email</label>
+        <input id="enqMail" name="email" type="email" autocomplete="email" placeholder="you@company.com" required>
+      </div>
+      <div class="enq-f">
+        <label for="enqCo">Company</label>
+        <input id="enqCo" name="company" type="text" autocomplete="organization" placeholder="Company name">
+      </div>
+      <div class="enq-f">
+        <label for="enqWhat">How can we help?</label>
+        <select id="enqWhat" name="interest">
+          <option>Staff augmentation</option>
+          <option>Managed delivery teams</option>
+          <option>Contract &amp; permanent placement</option>
+          <option>Outsourcing &amp; consulting</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="enq-f wide">
+        <label for="enqMsg">A little about your requirements</label>
+        <textarea id="enqMsg" name="message" placeholder="Skills, team size, timeline, or the challenge you want to solve&hellip;"></textarea>
+      </div>
+    </div>
+    <div class="enq-go">
+      <button class="enq-sub" type="submit">Send enquiry <span aria-hidden="true">&rarr;</span></button>
+      <p class="enq-note">This opens the message in your own mail app. Nothing is sent
+        or stored by this page.</p>
+    </div>
+    <p class="enq-say" id="enqSay" role="status" aria-live="polite"></p>
+  </form>
   <div class="ct-rail" data-r style="--dl:170ms">
     <div class="ct-col">
       <p class="ct-k">Email</p>
@@ -1530,10 +1642,14 @@ body.cur #cd,body.cur #cr{opacity:1}
         the page itself rather than from Google Fonts, so no request &mdash; and
         therefore no IP address of yours &mdash; reaches any other company while
         you read it.</p>
-      <p>There is no form to fill in. The email and telephone links open your own
-        mail or phone application; ITCAN receives only what you then choose to
-        send. Links to news coverage and to itcan.biz open on those sites, which
-        have their own privacy practices.</p>
+      <p>The enquiry form does not submit anywhere. What you type stays in your
+        browser until you press send, at which point it is composed into a message
+        in your own mail application &mdash; you see it, and you send it. Nothing is
+        posted to a server, and nothing is stored by this page.</p>
+      <p>The email and telephone links work the same way: they open your own mail
+        or phone application, and ITCAN receives only what you then choose to send.
+        Links to news coverage and to itcan.biz open on those sites, which have
+        their own privacy practices.</p>
       <p>Because nothing is collected, there is nothing held about you to access,
         correct or erase. Enquiries: <a href="mailto:info@itcan.biz">info@itcan.biz</a>.</p>
     </div>
@@ -2468,6 +2584,70 @@ function setLegal(v,sec){
     if(legalPrev&&legalPrev.focus)legalPrev.focus();
   }
 }
+/* ── enquiry ───────────────────────────────────────────────
+   Composes the message in the reader's own mail client. No endpoint, no
+   fetch, no storage — the page keeps collecting nothing, which is what
+   the colophon promises. */
+var enq=document.getElementById('enq');
+if(enq){
+  var enqSay=document.getElementById('enqSay');
+  enq.addEventListener('submit',function(e){
+    e.preventDefault();
+    var g=function(id){return (document.getElementById(id).value||'').trim();};
+    var nm=g('enqName'),em=g('enqMail'),co=g('enqCo'),msg=g('enqMsg');
+    var what=document.getElementById('enqWhat').value;
+    if(!nm||!em){
+      enqSay.textContent='Please add your name and email so we can reply.';
+      document.getElementById(nm?'enqMail':'enqName').focus();
+      return;
+    }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){
+      enqSay.textContent='That email address does not look right.';
+      document.getElementById('enqMail').focus();return;
+    }
+    var body=['Name: '+nm,'Email: '+em];
+    if(co)body.push('Company: '+co);
+    body.push('Interest: '+what,'','Requirements:',msg||'(to follow)');
+    location.href='mailto:info@itcan.biz'
+      +'?subject='+encodeURIComponent('Enquiry \u2014 '+what)
+      +'&body='+encodeURIComponent(body.join('\n'));
+    enqSay.textContent='Opening your mail app\u2026 if nothing happens, write to info@itcan.biz.';
+  });
+}
+
+/* the engagement models open one at a time, like a reference card */
+[].forEach.call(document.querySelectorAll('.eng-i'),function(card){
+  var top=card.querySelector('.eng-top'),body=card.querySelector('.eng-b');
+  top.addEventListener('click',function(){
+    var open=card.classList.contains('open');
+    [].forEach.call(document.querySelectorAll('.eng-i.open'),function(other){
+      other.classList.remove('open');
+      other.querySelector('.eng-top').setAttribute('aria-expanded','false');
+      other.querySelector('.eng-b').hidden=true;
+    });
+    if(!open){
+      body.hidden=false;card.classList.add('open');
+      top.setAttribute('aria-expanded','true');
+    }
+  });
+});
+[].forEach.call(document.querySelectorAll('.eng-go[data-model]'),function(b){
+  b.addEventListener('click',function(){enquireAbout(b.getAttribute('data-model'));});
+});
+
+/* a model chosen in the Solutions band preselects it here */
+function enquireAbout(model){
+  var sel=document.getElementById('enqWhat');
+  if(sel){
+    for(var i=0;i<sel.options.length;i++){
+      if(sel.options[i].text.replace(/&amp;/g,'&')===model){sel.selectedIndex=i;break;}
+    }
+  }
+  var c=document.getElementById('contact');
+  if(c)c.scrollIntoView({behavior:'smooth',block:'start'});
+  setTimeout(function(){var n=document.getElementById('enqName');if(n)n.focus({preventScroll:true});},650);
+}
+
 [].forEach.call(document.querySelectorAll('[data-legal]'),function(b){
   b.addEventListener('click',function(){setLegal(true,b.getAttribute('data-legal'));});
 });
